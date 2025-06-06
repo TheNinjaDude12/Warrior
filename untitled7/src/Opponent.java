@@ -1,10 +1,15 @@
 public class Opponent {
+    private String name;
     private int hitPoints;
     private int attack;
     private int defense;
     private int speed;
     private boolean isCharging = false;
 
+    public String getName() {
+        return name;
+    }
+    
     public int getHitPoints() {
         return hitPoints;
     }
@@ -21,6 +26,10 @@ public class Opponent {
         return speed;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
     }
