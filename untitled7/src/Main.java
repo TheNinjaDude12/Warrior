@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         characterCreation();
-
+        chooseOpponent();
 
     }
     public static void showStats(Warrior warrior) {
@@ -97,7 +97,59 @@ public class Main {
             }
         }
 
-
+    public static Opponent chooseOpponent() {
+        Scanner sc = new Scanner(System.in);
+        
+        while (true){
+            Opponent opponent = new Opponent();
+            System.out.println("""
+            Choose your Opponent
+            1. Thief\s
+                150 HP // 20 ATK // 20 DEF // 40 SPD
+            2. Viking
+                250 HP // 30 ATK // 30 DEF // 30 SPD
+            3. Minotaur
+                350 HP // 40 ATK // 40 DEF // 20 SPD
+                           
+            Choice: """
+            );
+            int input = sc.nextInt();
+            sc.nextLine();
+            
+            switch (input) {
+                case 1:
+                    opponent.setHitPoints(150);
+                    opponent.setAttack(20);
+                    opponent.setDefense(20);
+                    opponent.setSpeed(40);
+                    System.out.println("Thief Selected");
+                    break;
+                case 2:
+                    opponent.setHitPoints(250);
+                    opponent.setAttack(30);
+                    opponent.setDefense(30);
+                    opponent.setSpeed(30);
+                    System.out.println("Viking Selected");
+                    break;
+                case 3:
+                    opponent.setHitPoints(350);
+                    opponent.setAttack(40);
+                    opponent.setDefense(40);
+                    opponent.setSpeed(20);
+                    System.out.println("Minotaur Selected");
+                    break;
+                default:
+                    System.out.println("Invalid Choice");
+            }
+        System.out.println("Proceed with current opponent?");
+            System.out.println("1. Continue");
+            System.out.println("2. Reset");
+            System.out.print("Choice: ");
+            char confirm = sc.nextLine().charAt(0);
+            if(confirm == '1') {
+               return opponent;
+            }
+        }
     }
     //Phase 2
     public static void Phase2(Warrior warrior){
