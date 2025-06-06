@@ -104,7 +104,7 @@ public class Main {
             Opponent opponent = new Opponent();
             System.out.println("""
             Choose your Opponent
-            1. Thief\s
+            1. Thief
                 150 HP // 20 ATK // 20 DEF // 40 SPD
             2. Viking
                 250 HP // 30 ATK // 30 DEF // 30 SPD
@@ -143,6 +143,7 @@ public class Main {
                     break;
                 default:
                     System.out.println("Invalid Choice");
+                    continue;
             }
         System.out.println("Proceed with current opponent?");
             System.out.println("1. Continue");
@@ -151,6 +152,53 @@ public class Main {
             char confirm = sc.nextLine().charAt(0);
             if(confirm == '1') {
                return opponent;
+            }
+        }
+    }
+
+    public static Environment chooseEnvironment() {
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            Environment environment = new Environment();
+            System.out.println("""
+                    Choose Your Environment
+                    1. Arena
+                        No Buffs or Penalties
+                    2. Swamp
+                        Player loses 1 HP every turn
+                        Opponent gains 1 ATK every turn
+                    3. Colosseum
+                        Player gains 1 ATK every turn
+                        Opponent loses 1 DEF every turn
+                    
+                    Choice: 
+                    """);
+
+            int input = sc.nextInt();
+            sc.nextLine();
+
+            switch (input) {
+                case 1:
+                    environment.setEnvironmentName("Arena");
+                    break;
+                case 2:
+                    environment.setEnvironmentName("Swamp");
+                    break;
+                case 3:
+                    environment.setEnvironmentName("Colosseum");
+                    break;
+                default:
+                    System.out.println("Invalid Choice.");
+                    continue;
+            }
+            System.out.println("Proceed with current Environment?");
+            System.out.println("1. Continue");
+            System.out.println("2. Reset");
+            System.out.print("Choice: ");
+            char confirm = sc.nextLine().charAt(0);
+            if(confirm == '1') {
+                return environment;
             }
         }
     }
