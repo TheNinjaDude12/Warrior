@@ -118,6 +118,7 @@ public class Main {
             
             switch (input) {
                 case 1:
+                    opponent.setName("Thief");
                     opponent.setHitPoints(150);
                     opponent.setAttack(20);
                     opponent.setDefense(20);
@@ -125,6 +126,7 @@ public class Main {
                     System.out.println("Thief Selected");
                     break;
                 case 2:
+                    opponent.setName("Viking");
                     opponent.setHitPoints(250);
                     opponent.setAttack(30);
                     opponent.setDefense(30);
@@ -132,6 +134,7 @@ public class Main {
                     System.out.println("Viking Selected");
                     break;
                 case 3:
+                    opponent.setName("Minotaur");
                     opponent.setHitPoints(350);
                     opponent.setAttack(40);
                     opponent.setDefense(40);
