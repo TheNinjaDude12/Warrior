@@ -44,34 +44,6 @@ public class Opponent {
     public void setCharging(boolean charging) {
         isCharging = charging;
     }
-
-    public void opponentChoice(Opponent opponent, int choice) {
-        switch (choice) {
-            case 1:
-                opponent.setHitPoints(150);
-                opponent.setAttack(20);
-                opponent.setDefense(20);
-                opponent.setSpeed(40);
-                System.out.println("Thief Selected");
-                break;
-            case 2:
-                opponent.setHitPoints(250);
-                opponent.setAttack(30);
-                opponent.setDefense(30);
-                opponent.setSpeed(30);
-                System.out.println("Viking Selected");
-                break;
-            case 3:
-                opponent.setHitPoints(350);
-                opponent.setAttack(40);
-                opponent.setDefense(40);
-                opponent.setSpeed(20);
-                System.out.println("Minotaur Selected");
-                break;
-            default:
-                System.out.println("Invalid Choice");
-        }
-    }
     
     public void attack(Warrior warrior) {
 
