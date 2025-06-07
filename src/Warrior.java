@@ -6,6 +6,7 @@ public class Warrior {
     private Armor armor;
     public Weapon weapon;
     private boolean defendedLastTurn = false;
+    private boolean isDefending = false;
     private int evadeChance = 0;
     private boolean isCharging = false;
 
@@ -92,16 +93,29 @@ public class Warrior {
 
 
     public void attack(Opponent opponent) {
+        int damage = (int) (getAttack() - getAttack() * (getDefense()/100.0));
+        if(opponent.isDefending()) {
+            damage = damage/2;
+        }
+        System.out.printf("Warrior attakcs %s for %d damage!\n", opponent.getName(), damage);
+        opponent.setHitPoints(opponent.getHitPoints() - damage );
 
     }
-    public void defend(Opponent opponent) {
+    public void defend() {
         defendedLastTurn = true;
+        isDefending = true;
 
+    }
+
+    public boolean isDefending() {
+        return isDefending;
     }
 
     public void charge() {
         isCharging = true;
 
     }
+
+
 
 }
