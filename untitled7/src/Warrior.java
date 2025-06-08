@@ -41,12 +41,13 @@ public class Warrior {
         return speed;
     }
 
-
-
-    public void setEvadeChance(int evadeChance) {
-        this.evadeChance = evadeChance;
-
+    public int getEvadeChance() {
+        return evadeChance;
     }
+
+
+
+
 
     public void setCharging(boolean charging) {
         isCharging = charging;
@@ -94,6 +95,10 @@ public class Warrior {
 
     public void attack(Opponent opponent) {
         int damage = (int) (getAttack() - getAttack() * (getDefense()/100.0));
+        if(isCharging) {
+            damage = damage * 2;
+            isCharging = false;
+        }
         if(opponent.isDefending()) {
             damage = damage/2;
         }
@@ -113,6 +118,35 @@ public class Warrior {
 
     public void charge() {
         isCharging = true;
+
+    }
+
+    public void weaponAbility(Opponent opponent, int temp) {
+        switch (getWeapon().getName()){
+            case "Dagger":
+                if(isDefendedLastTurn()){
+                    System.out.println("Evade Ready!!!");
+                    evadeChance = 100;
+                    resetDefendedLastTurn();
+                }
+                else{
+                    evadeChance = 0;
+                    opponent.setAttack(temp);
+                }
+                break;
+            case "Sword":
+                setAttack(30+10);
+                break;
+            case "Axe":
+                if(isCharging()){
+                    setSpeed(getSpeed() + 5);
+                    setSpeed(getAttack() + 5);
+                }
+                break;
+
+        }
+
+
 
     }
 

@@ -60,6 +60,9 @@ public class Opponent {
         if(warrior.isDefending()) {
             damage = damage/2;
         }
+        if(warrior.getEvadeChance() == 100) {
+            damage = 0;
+        }
         System.out.println(getName()+ " attacks warrior for " + damage + " damage!\n") ;
         warrior.setHitPoints(warrior.getHitPoints() - damage );
 

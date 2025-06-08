@@ -200,8 +200,8 @@ public class Main {
             System.out.println("1. Continue");
             System.out.println("2. Reset");
             System.out.print("Choice: ");
-            char confirm = sc.nextLine().charAt(0);
-            if (confirm == '1') {
+            String confirm = sc.nextLine();
+            if (confirm.equals("1")) {
                 return environment;
             }
         }
@@ -215,7 +215,7 @@ public class Main {
             System.out.print("2. DEFEND ");
             System.out.print("3. CHARGE");
             int choice = sc.nextInt();
-            if (choice < 3 && choice > 0) {
+            if (choice < 4 && choice > 0) {
                 return choice;
             } else
                 System.out.println("Invalid move!");
@@ -241,10 +241,17 @@ public class Main {
         int faux = 1;
         boolean warriorDead = false;
         boolean opponentDead = false;
+        int temp = opponent.getAttack();
+
 
 
         while (!warriorDead && !opponentDead) {
+
+            environment.environmentEffects(warrior, opponent);
+            warrior.weaponAbility(opponent, temp);
             System.out.print("\nWARRIOR HP " + warrior.getHitPoints() + "\t\t" + "OPPONENT HP " + opponent.getHitPoints());
+            System.out.print("\nWARRIOR ATK " + warrior.getAttack() + "\t\t" + "OPPONENT ATK " + opponent.getAttack());
+            System.out.print("\nWARRIOR DEF " + warrior.getDefense() + "\t\t" + "OPPONENT DEF " + opponent.getDefense());
             if(faux == 3) {
                 faux = 1;
             }
