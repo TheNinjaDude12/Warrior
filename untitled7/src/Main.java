@@ -1,5 +1,5 @@
 import java.util.Scanner;
-
+import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
@@ -115,7 +115,7 @@ public class Main {
                     3. Minotaur
                         350 HP // 40 ATK // 40 DEF // 20 SPD
                     
-                    Choice: """
+                    Choice:"""
             );
             int input = sc.nextInt();
             sc.nextLine();
@@ -176,8 +176,7 @@ public class Main {
                         Player gains 1 ATK every turn
                         Opponent loses 1 DEF every turn
                     
-                    Choice:  
-                    """);
+                    Choice: """);
 
             int input = sc.nextInt();
             sc.nextLine();
@@ -213,7 +212,7 @@ public class Main {
             System.out.println("\nChoose your move");
             System.out.print("1. ATTACK ");
             System.out.print("2. DEFEND ");
-            System.out.print("3. CHARGE");
+            System.out.print("3. CHARGE \n");
             int choice = sc.nextInt();
             if (choice < 4 && choice > 0) {
                 return choice;
@@ -350,6 +349,55 @@ public class Main {
                         break;
 
                 }
+            } else {
+                Random random = new Random();
+                boolean turnOrder = random.nextBoolean();
+
+                if (turnOrder) {
+                    switch (warriorChoice) {
+                        case 1:
+                            warrior.attack(opponent);
+                            opponentDead = isDead(warrior);
+                            opponent.think(warrior, faux);
+                            warriorDead = isDead(warrior);
+                            break;
+                        case 2:
+                            warrior.defend();
+                            opponent.think(warrior, faux);
+                            warriorDead = isDead(warrior);
+                            break;
+                        case 3:
+                            if (!warrior.charge()) {
+                                continue;
+                            }
+                            warrior.charge();
+                            opponent.think(warrior, faux);
+                            warriorDead = isDead(warrior);
+                            break;
+
+                    }
+                } else {
+                    switch (warriorChoice) {
+                        case 1:
+                            opponent.think(warrior, faux);
+                            warriorDead = isDead(warrior);
+                            warrior.attack(opponent);
+                            opponentDead = isDead(opponent);
+                            break;
+
+                        case 2:
+                            opponent.think(warrior, faux);
+                            warriorDead = isDead(warrior);
+                            warrior.defend();
+                            break;
+                        case 3:
+                            opponent.think(warrior, faux);
+                            warriorDead = isDead(warrior);
+                            warrior.charge();
+                            break;
+
+                    }
+                }
             }
             faux++;
             turn++;
@@ -371,3 +419,6 @@ public class Main {
 
 
 }
+
+
+
