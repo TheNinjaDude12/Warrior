@@ -17,12 +17,6 @@ public class Main {
         sc.nextLine();
     }
 
-    public static void showStats(Opponent opponent) {
-        System.out.println("CURRENT STATS");
-        System.out.printf("HP %d\n", opponent.getHitPoints());
-
-    }
-
     public static void chooseArmor(Warrior warrior) {
         Armor lightArmor = new Armor("Light Armor", 20, 5);
         Armor mediumArmor = new Armor("Medium Armor", 30, 15);
@@ -42,14 +36,20 @@ public class Main {
             case 2 -> warrior.equip(mediumArmor);
             case 3 -> warrior.equip(heavyArmor);
         }
+        clearScreen();
         System.out.println("Equipped " + warrior.getArmor().getName());
         sc.nextLine();
-    }
 
+    }
+    public static void clearScreen() {
+        for(int i = 0; i < 100; i++) {
+            System.out.println();
+        }
+    }
     public static void chooseWeapon(Warrior warrior) {
         Weapon dagger = new Weapon("Dagger", 20, 0);
         Weapon sword = new Weapon("Sword", 30, 10);
-        Weapon battleaxe = new Weapon("Battleaxe", 40, 20);
+        Weapon battleaxe = new Weapon("Axe", 40, 20);
         Scanner sc = new Scanner(System.in);
         System.out.println("Choose your weapon");
         System.out.println("1.Dagger (+20 ATK)");
@@ -176,7 +176,7 @@ public class Main {
                         Player gains 1 ATK every turn
                         Opponent loses 1 DEF every turn
                     
-                    Choice: 
+                    Choice:  
                     """);
 
             int input = sc.nextInt();
@@ -233,6 +233,44 @@ public class Main {
 
     }
 
+    public static void predictMove(Opponent opponent, int faux) {
+        switch(opponent.getName()){
+            case "Thief":
+                System.out.println("Thief will attack!!");
+                break;
+            case "Viking":
+                switch (faux) {
+                    case 1,3:
+                        System.out.println("Viking will attack!!");
+                        break;
+                    case 2:
+                        System.out.println("Viking will defend!!");
+                        break;
+                }
+                break;
+            case "Minotaur":
+                switch (faux) {
+                    case 1,3:
+                        System.out.println("Minotaur will attack!!");
+                        break;
+                    case 2:
+                        System.out.println("Minotaur will charge!!");
+                        break;
+                }
+                break;
+        }
+
+    }
+
+    public static void displayBattleStats(Warrior warrior, Opponent opponent) {
+        System.out.print("\nWARRIOR HP " + warrior.getHitPoints() + "\t\t" + "OPPONENT HP " + opponent.getHitPoints());
+        System.out.print("\nWARRIOR ATK " + warrior.getAttack() + "\t\t" + "OPPONENT ATK " + opponent.getAttack());
+        System.out.print("\nWARRIOR DEF " + warrior.getDefense() + "\t\t" + "OPPONENT DEF " + opponent.getDefense());
+        System.out.println("\nWARRIOR SPD " + warrior.getSpeed() + "\t\t" + "OPPONENT SPD " + opponent.getSpeed()) ;
+
+    }
+
+
 
     public static void Phase2() {
         Warrior warrior = characterCreation();
@@ -241,20 +279,19 @@ public class Main {
         int faux = 1;
         boolean warriorDead = false;
         boolean opponentDead = false;
-        int temp = opponent.getAttack();
+        int turn = 1;
 
 
 
         while (!warriorDead && !opponentDead) {
+            warrior.weaponAbility(opponent, turn);
+            environment.environmentEffects(warrior, opponent, turn);
+            displayBattleStats(warrior, opponent);
 
-            environment.environmentEffects(warrior, opponent);
-            warrior.weaponAbility(opponent, temp);
-            System.out.print("\nWARRIOR HP " + warrior.getHitPoints() + "\t\t" + "OPPONENT HP " + opponent.getHitPoints());
-            System.out.print("\nWARRIOR ATK " + warrior.getAttack() + "\t\t" + "OPPONENT ATK " + opponent.getAttack());
-            System.out.print("\nWARRIOR DEF " + warrior.getDefense() + "\t\t" + "OPPONENT DEF " + opponent.getDefense());
-            if(faux == 3) {
+            if(faux == 4){
                 faux = 1;
             }
+            predictMove(opponent, faux);
             int warriorChoice = WarriorMove();
             if (warrior.getSpeed() > opponent.getSpeed()) {
                 switch (warriorChoice) {
@@ -263,19 +300,16 @@ public class Main {
                         opponentDead = isDead(warrior);
                         opponent.think(warrior,faux);
                         warriorDead = isDead(warrior);
-                        faux++;
                         break;
                     case 2:
                         warrior.defend();
                         opponent.think(warrior,faux);
                         warriorDead = isDead(warrior);
-                        faux++;
                         break;
                     case 3:
                         warrior.charge();
                         opponent.think(warrior,faux);
                         warriorDead = isDead(warrior);
-                        faux++;
                         break;
 
                 }
@@ -289,24 +323,23 @@ public class Main {
                         warriorDead = isDead(warrior);
                         warrior.attack(opponent);
                         opponentDead = isDead(opponent);
-                        faux++;
                         break;
 
                     case 2:
                         opponent.think(warrior,faux);
                         warriorDead = isDead(warrior);
                         warrior.defend();
-                        faux++;
                         break;
                     case 3:
                         opponent.think(warrior,faux);
                         warriorDead = isDead(warrior);
                         warrior.charge();
-                        faux++;
                         break;
 
                 }
             }
+            faux++;
+            turn++;
 
         }
 

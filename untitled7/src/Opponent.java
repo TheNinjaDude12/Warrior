@@ -57,8 +57,13 @@ public class Opponent {
     
     public void attack(Warrior warrior) {
         int damage = (int) (getAttack() - getAttack() * (getDefense()/100.0));
+        if(isCharging) {
+            damage *= 2;
+            isCharging = false;
+        }
         if(warrior.isDefending()) {
             damage = damage/2;
+            warrior.setDefendingFalse();
         }
         if(warrior.getEvadeChance() == 100) {
             damage = 0;
@@ -77,7 +82,13 @@ public class Opponent {
 
     }
 
+    public void setDefendingFalse() {
+        isDefending = false;
+
+    }
+
     public void charge() {
+        isCharging = true;
 
     }
     
@@ -88,28 +99,29 @@ public class Opponent {
                 break;
             case "Viking":
                 switch (faux) {
-                    case 1:
+                    case 1, 3:
                         attack(warrior);
                         break;
                     case 2:
+                        System.out.println("VIKING IS DEFENDING!!!");
                         defend();
                         break;
-                    case 3:
-                        attack(warrior);
-                        break;
                 }
+                break;
             case "Minotaur":
                 switch (faux) {
                     case 1:
                         attack(warrior);
                         break;
                     case 2:
+                        System.out.println("MINOTAUR IS CHARGING!!!");
                         charge();
                         break;
                     case 3:
                         attack(warrior);
                         break;
                 }
+                break;
         }
 
         }

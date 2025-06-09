@@ -101,6 +101,7 @@ public class Warrior {
         }
         if(opponent.isDefending()) {
             damage = damage/2;
+            opponent.setDefendingFalse();
         }
         System.out.printf("Warrior attakcs %s for %d damage!\n", opponent.getName(), damage);
         opponent.setHitPoints(opponent.getHitPoints() - damage );
@@ -116,32 +117,45 @@ public class Warrior {
         return isDefending;
     }
 
+    public void setDefendingFalse() {
+        isDefending = false;
+    }
+
     public void charge() {
         isCharging = true;
 
     }
 
-    public void weaponAbility(Opponent opponent, int temp) {
+    public void weaponAbility(Opponent opponent, int turn) {
         switch (getWeapon().getName()){
             case "Dagger":
-                if(isDefendedLastTurn()){
+                if(isDefendedLastTurn()) {
                     System.out.println("Evade Ready!!!");
-                    evadeChance = 100;
-                    resetDefendedLastTurn();
+                    if(isDefending) {
+                        evadeChance = 100;
+                        resetDefendedLastTurn();
+
+                    }
+
                 }
-                else{
-                    evadeChance = 0;
-                    opponent.setAttack(temp);
-                }
+
                 break;
             case "Sword":
-                setAttack(30+10);
+                if(turn == 1) {
+                    setAttack(40);
+                }
+
                 break;
             case "Axe":
                 if(isCharging()){
                     setSpeed(getSpeed() + 5);
-                    setSpeed(getAttack() + 5);
+                    setAttack(getAttack() + 5);
                 }
+                else {
+                    setAttack(40);
+                    setSpeed(50 - armor.getSpeedPenalty() - weapon.getSpeedPenalty());
+                }
+
                 break;
 
         }
