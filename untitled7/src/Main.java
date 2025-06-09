@@ -207,7 +207,7 @@ public class Main {
         }
     }
 
-    public static int WarriorMove() {
+    public static int warriorMove() {
         Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.println("\nChoose your move");
@@ -288,50 +288,63 @@ public class Main {
             environment.environmentEffects(warrior, opponent, turn);
             displayBattleStats(warrior, opponent);
 
-            if(faux == 4){
+            if (faux == 4) {
                 faux = 1;
             }
             predictMove(opponent, faux);
-            int warriorChoice = WarriorMove();
+            int warriorChoice = warriorMove();
+            if(warrior.isCharging() && warriorChoice == 3) {
+                do {
+                    System.out.println("Warrior is already charging!!!!");
+                    warriorChoice = warriorMove();
+
+
+                } while(warriorChoice == 3);
+
+            }
+
+
             if (warrior.getSpeed() > opponent.getSpeed()) {
                 switch (warriorChoice) {
                     case 1:
                         warrior.attack(opponent);
                         opponentDead = isDead(warrior);
-                        opponent.think(warrior,faux);
+                        opponent.think(warrior, faux);
                         warriorDead = isDead(warrior);
                         break;
                     case 2:
                         warrior.defend();
-                        opponent.think(warrior,faux);
+                        opponent.think(warrior, faux);
                         warriorDead = isDead(warrior);
                         break;
                     case 3:
+                        if (!warrior.charge()) {
+                            continue;
+                        }
                         warrior.charge();
-                        opponent.think(warrior,faux);
+                        opponent.think(warrior, faux);
                         warriorDead = isDead(warrior);
                         break;
 
                 }
 
 
-            }
-            else if (warrior.getSpeed() < opponent.getSpeed()) {
+            } else if (warrior.getSpeed() < opponent.getSpeed()) {
                 switch (warriorChoice) {
                     case 1:
-                        opponent.think(warrior,faux);
+                        opponent.think(warrior, faux);
                         warriorDead = isDead(warrior);
                         warrior.attack(opponent);
                         opponentDead = isDead(opponent);
                         break;
 
                     case 2:
-                        opponent.think(warrior,faux);
+                        opponent.think(warrior, faux);
                         warriorDead = isDead(warrior);
                         warrior.defend();
                         break;
                     case 3:
-                        opponent.think(warrior,faux);
+                        opponent.think(warrior, faux);
                         warriorDead = isDead(warrior);
                         warrior.charge();
                         break;

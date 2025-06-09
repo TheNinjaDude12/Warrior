@@ -96,7 +96,7 @@ public class Warrior {
     public void attack(Opponent opponent) {
         int damage = (int) (getAttack() - getAttack() * (getDefense()/100.0));
         if(isCharging) {
-            damage = damage * 2;
+            damage = damage * 3;
             isCharging = false;
         }
         if(opponent.isDefending()) {
@@ -121,8 +121,16 @@ public class Warrior {
         isDefending = false;
     }
 
-    public void charge() {
-        isCharging = true;
+    public boolean charge() {
+        if(!isCharging) {
+            isCharging = true;
+            return true;
+        }
+        else {
+            System.out.println("Warrior is already charging!");
+            return false;
+        }
+
 
     }
 
@@ -149,7 +157,8 @@ public class Warrior {
             case "Axe":
                 if(isCharging()){
                     setSpeed(getSpeed() + 5);
-                    setAttack(getAttack() + 5);
+                    System.out.println(getAttack());
+                    setAttack(45);
                 }
                 else {
                     setAttack(40);

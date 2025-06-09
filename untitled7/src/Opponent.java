@@ -58,7 +58,7 @@ public class Opponent {
     public void attack(Warrior warrior) {
         int damage = (int) (getAttack() - getAttack() * (getDefense()/100.0));
         if(isCharging) {
-            damage *= 2;
+            damage *= 3;
             isCharging = false;
         }
         if(warrior.isDefending()) {
