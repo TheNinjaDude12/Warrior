@@ -307,7 +307,7 @@ public class Main {
                 switch (warriorChoice) {
                     case 1:
                         warrior.attack(opponent);
-                        opponentDead = isDead(warrior);
+                        opponentDead = isDead(opponent);
                         opponent.think(warrior, faux);
                         warriorDead = isDead(warrior);
                         break;
@@ -357,7 +357,7 @@ public class Main {
                     switch (warriorChoice) {
                         case 1:
                             warrior.attack(opponent);
-                            opponentDead = isDead(warrior);
+                            opponentDead = isDead(opponent);
                             opponent.think(warrior, faux);
                             warriorDead = isDead(warrior);
                             break;
