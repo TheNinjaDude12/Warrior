@@ -42,6 +42,16 @@ public class Opponent {
      */
     private boolean isDefending = false;    // True when opponent is currently defending
 
+    /**
+     * Constructs a new Opponent with the specified combat statistics.
+     * Both charging and defending states are initialized to false.
+     *
+     * @param name The name/type of the opponent (e.g., "Thief", "Viking", "Minotaur")
+     * @param hitPoints The initial hit points of the opponent
+     * @param attack The attack damage value of the opponent
+     * @param defense The defense value of the opponent
+     * @param speed The speed value of the opponent (used for turn order)
+     */
     public Opponent(String name, int hitPoints, int attack, int defense, int speed) {
         this.name = name;
         this.hitPoints = hitPoints;
