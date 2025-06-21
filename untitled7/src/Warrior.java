@@ -2,6 +2,9 @@
  * Represents a Warrior in a combat scenario with attributes such as health points, attack, defense, speed, and equipment.
  * The warrior can perform actions such as attacking, defending, charging, and using weapon abilities.
  */
+
+import java.util.Random;
+
 public class Warrior {
     // Base warrior statistics
     /**
@@ -312,6 +315,40 @@ public class Warrior {
                     System.out.println("Battleaxe ability activated: +5 speed and +5 attack!");
                 }
                 break;
+
+            case "Staff":
+                // Staff Ability: When charging, gain a random element that grants you stats.
+                Random r = new Random();
+                switch (r.nextInt(5)) {
+                    case 1:
+                        // Fire
+                        if (isCharging) {
+                            this.attack += 5;
+                            System.out.println("Staff ability activated: Fire! +5 attack!");
+                        }
+                        break;
+                    case 2:
+                        // Wind
+                        if (isCharging) {
+                            this.speed += 5;
+                            System.out.println("Staff ability activated: Wind! +5 speed!");
+                        }
+                        break;
+                    case 3:
+                        // Water
+                        if (isCharging) {
+                            this.hitPoints += 10;
+                            System.out.println("Staff ability activated: Water! +10 health!");
+                        }
+                        break;
+                    case 4:
+                        // Earth
+                        if (isCharging) {
+                            this.defense += 3;
+                            System.out.println("Staff ability activated: Fire! +3 defense!");
+                        }
+                }
         }
+
     }
 }
