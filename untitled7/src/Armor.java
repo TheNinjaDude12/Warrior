@@ -1,27 +1,60 @@
+/**
+ * Represents an Armor item with its properties such as name, defense value, and speed penalty.
+ */
 public class Armor {
-    // Armor properties (public for easy access, though private with getters would be better practice)
+
+    
+    /**
+     * The name of the armor piece.
+     */
     private String name;           // Display name of the armor piece
+    
+    /**
+     * The defense value provided by this armor.
+     */
     private int defense;           // Defense value provided by this armor
+    
+    /**
+     * The speed penalty caused by wearing this armor.
+     */
     private int speedPenalty;      // Speed reduction caused by wearing this armor
 
-    // Constructor to initialize armor with its properties
+    /**
+     * Constructs an Armor object with the given name, defense value, and speed penalty.
+     *
+     * @param name The name of the armor.
+     * @param defense The defense value provided by this armor.
+     * @param speedPenalty The speed penalty incurred by wearing this armor.
+     */
     public Armor(String name, int defense, int speedPenalty) {
         this.name = name;
         this.defense = defense;
         this.speedPenalty = speedPenalty;
     }
 
-    // Getter method to retrieve armor name
+    /**
+     * Retrieves the name of the armor.
+     *
+     * @return The name of the armor.
+     */
     public String getName() {
         return name;
     }
 
-    // Getter method to retrieve defense value
+    /**
+     * Retrieves the defense value of the armor.
+     *
+     * @return The defense value of the armor.
+     */
     public int getDefense() {
         return defense;
     }
 
-    // Getter method to retrieve speed penalty
+    /**
+     * Retrieves the speed penalty associated with the armor.
+     *
+     * @return The speed penalty caused by the armor.
+     */
     public int getSpeedPenalty() {
         return speedPenalty;
     }
