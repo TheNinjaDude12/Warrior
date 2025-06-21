@@ -3,27 +3,29 @@
  * The opponent can perform different combat actions such as attacking, defending, or charging.
  */
 public class Opponent {
+
+
     // Opponent statistics
     /**
      * The name/type of the opponent (e.g., "Thief", "Viking", "Minotaur").
      */
     private String name;            // Name/type of the opponent (Thief, Viking, Minotaur)
-    
+
     /**
      * Health points of the opponent. The opponent dies when this reaches 0.
      */
     private int hitPoints;          // Health points - opponent dies when this reaches 0
-    
+
     /**
      * The attack damage value of the opponent.
      */
     private int attack;             // Attack damage value
-    
+
     /**
      * The defense value of the opponent. Reduces incoming damage.
      */
     private int defense;            // Defense value (reduces incoming damage)
-    
+
     /**
      * The speed value of the opponent. Determines the turn order.
      */
@@ -34,11 +36,20 @@ public class Opponent {
      * True when the opponent is charging for the next attack (triple damage).
      */
     private boolean isCharging = false;     // True when opponent is charging for next attack
-    
+
     /**
      * True when the opponent is currently defending (halves incoming damage).
      */
     private boolean isDefending = false;    // True when opponent is currently defending
+
+    public Opponent(String name, int hitPoints, int attack, int defense, int speed) {
+        this.name = name;
+        this.hitPoints = hitPoints;
+        this.attack = attack;
+        this.defense = defense;
+        this.speed = speed;
+
+    }
 
     // Getter methods for accessing opponent statistics
     /**
@@ -123,14 +134,7 @@ public class Opponent {
         this.defense = defense;
     }
 
-    /**
-     * Sets the speed value of the opponent.
-     *
-     * @param speed The speed value to be set for the opponent.
-     */
-    public void setSpeed(int speed){
-        this.speed = speed;
-    }
+
 
     // Combat action: Attack the warrior
     /**
@@ -155,7 +159,7 @@ public class Opponent {
         // Check if warrior is defending (halves damage)
         if(warrior.isDefending()) {
             damage = damage / 2;                                      // Defending reduces damage by half
-            warrior.setDefendingFalse();                            // Reset warrior's defending state
+            warrior.setDefending(false);                            // Reset warrior's defending state
         }
 
         // Ensure damage is never negative
