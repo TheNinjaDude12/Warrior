@@ -1,94 +1,213 @@
+/**
+ * Represents a Warrior in a combat scenario with attributes such as health points, attack, defense, speed, and equipment.
+ * The warrior can perform actions such as attacking, defending, charging, and using weapon abilities.
+ */
 public class Warrior {
     // Base warrior statistics
+    /**
+     * Health points of the warrior. The warrior dies when this reaches 0.
+     */
     private int hitPoints = 100;    // Health points - warrior dies when this reaches 0
+    
+    /**
+     * Base attack value of the warrior. Modified by the weapon.
+     */
     private int attack = 1;         // Base attack value (modified by weapon)
+    
+    /**
+     * Base defense value of the warrior. Modified by the armor.
+     */
     private int defense = 1;        // Base defense value (modified by armor)
+    
+    /**
+     * Base speed value of the warrior. Modified by the equipment.
+     */
     private int speed = 50;         // Base speed value (modified by equipment)
 
     // Equipment slots
+    /**
+     * Currently equipped armor. 
+     */
     private Armor armor;            // Currently equipped armor
+    
+    /**
+     * Currently equipped weapon. 
+     */
     public Weapon weapon;           // Currently equipped weapon (public for easy access)
 
     // Battle state tracking
+    /**
+     * Tracks if the warrior defended on the previous turn. Used for weapon abilities like the Dagger's evade.
+     */
     private boolean defendedLastTurn = false;  // Tracks if warrior defended on previous turn (for dagger ability)
+    
+    /**
+     * True when the warrior is currently defending, reducing incoming damage.
+     */
     private boolean isDefending = false;       // True when warrior is currently defending
+    
+    /**
+     * True when the warrior is currently charging for the next attack (triple damage).
+     */
     private boolean isCharging = false;        // True when warrior is currently charging for next attack
 
     // Getter methods for accessing private attributes
+    /**
+     * Retrieves the warrior's current hit points.
+     *
+     * @return The current hit points of the warrior.
+     */
     public int getHitPoints() {
         return hitPoints;
     }
 
+    /**
+     * Sets the warrior's current hit points.
+     *
+     * @param hitPoints The hit points to be set.
+     */
     public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
     }
 
+    /**
+     * Retrieves the warrior's current attack value.
+     *
+     * @return The current attack value of the warrior.
+     */
     public int getAttack() {
         return attack;
     }
 
+    /**
+     * Sets the warrior's attack value.
+     *
+     * @param attack The attack value to be set.
+     */
     public void setAttack(int attack) {
         this.attack = attack;
     }
 
+    /**
+     * Retrieves the warrior's current defense value.
+     *
+     * @return The current defense value of the warrior.
+     */
     public int getDefense() {
         return defense;
     }
 
+    /**
+     * Sets the warrior's defense value.
+     *
+     * @param defense The defense value to be set.
+     */
     public void setDefense(int defense) {
         this.defense = defense;
     }
 
+    /**
+     * Retrieves the warrior's current speed value.
+     *
+     * @return The current speed value of the warrior.
+     */
     public int getSpeed() {
         return speed;
     }
 
+    /**
+     * Sets the warrior's speed value.
+     *
+     * @param speed The speed value to be set.
+     */
     public void setSpeed(int speed) {
         this.speed = speed;
     }
 
     // Charging state management
+    /**
+     * Sets the warrior's charging state, allowing triple damage on the next attack.
+     *
+     * @param charging True if the warrior is charging, false otherwise.
+     */
     public void setCharging(boolean charging) {
         isCharging = charging;
     }
 
+    /**
+     * Checks if the warrior is currently charging for a triple damage attack.
+     *
+     * @return True if the warrior is charging, false otherwise.
+     */
     public boolean isCharging() {
         return isCharging;
     }
 
     // Defense state tracking methods (used for dagger weapon ability)
+    /**
+     * Resets the tracking of whether the warrior defended last turn.
+     */
     public void resetDefendedLastTurn() {
         defendedLastTurn = false;
     }
 
+    /**
+     * Checks if the warrior defended on the last turn.
+     *
+     * @return True if the warrior defended last turn, false otherwise.
+     */
     public boolean isDefendedLastTurn() {
         return defendedLastTurn;
     }
 
     // Equipment methods
-    // Equip weapon and apply its stat modifications
+    /**
+     * Equips a weapon and applies its stat modifications to the warrior.
+     *
+     * @param weapon The weapon to be equipped.
+     */
     public void equip(Weapon weapon) {
         this.weapon = weapon;
         this.attack = weapon.getAttack();                           // Set attack to weapon's attack value
         this.speed = this.speed - weapon.getSpeedPenalty();        // Reduce speed by weapon's penalty
     }
 
+    /**
+     * Retrieves the currently equipped weapon.
+     *
+     * @return The currently equipped weapon.
+     */
     public Weapon getWeapon() {
         return weapon;
     }
 
-    // Equip armor and apply its stat modifications
+    /**
+     * Equips an armor and applies its stat modifications to the warrior.
+     *
+     * @param armor The armor to be equipped.
+     */
     public void equip(Armor armor) {
         this.armor = armor;
         this.defense = armor.getDefense();                          // Set defense to armor's defense value
         this.speed = this.speed - armor.getSpeedPenalty();         // Reduce speed by armor's penalty
     }
 
+    /**
+     * Retrieves the currently equipped armor.
+     *
+     * @return The currently equipped armor.
+     */
     public Armor getArmor() {
         return armor;
     }
 
     // Combat action: Attack the opponent
+    /**
+     * Attacks an opponent and calculates the damage based on whether the warrior is charging
+     * and whether the opponent is defending.
+     *
+     * @param opponent The opponent being attacked.
+     */
     public void attack(Opponent opponent) {
         int damage;
 
@@ -104,7 +223,7 @@ public class Warrior {
 
         // Check if opponent is defending (halves damage)
         if(opponent.isDefending()) {
-            damage = damage/2;                                      // Defending reduces damage by half
+            damage = damage / 2;                                      // Defending reduces damage by half
             opponent.setDefendingFalse();                           // Reset opponent's defending state
         }
 
@@ -118,66 +237,8 @@ public class Warrior {
     }
 
     // Combat action: Defend (reduces incoming damage and enables special abilities)
+    /**
+     * Activates the warrior's defense, reducing incoming damage.
+     */
     public void defend() {
-        defendedLastTurn = true;        // Mark that warrior defended this turn (for weapon abilities)
-        isDefending = true;             // Set defending state (reduces incoming damage)
-    }
-
-    // Defense state management
-    public boolean isDefending() {
-        return isDefending;
-    }
-
-    public void setDefendingFalse() {
-        isDefending = false;
-    }
-
-    // Combat action: Charge for next attack (enables triple damage on next attack)
-    public boolean charge() {
-        if(!isCharging) {
-            isCharging = true;          // Set charging state
-            return true;                // Return true if charge was successful
-        }
-        else {
-            System.out.println("Warrior is already charging!");
-            return false;               // Return false if already charging
-        }
-    }
-
-    // Apply weapon-specific special abilities each turn
-    public void weaponAbility(Opponent opponent, int turn) {
-        switch (getWeapon().getName()){
-            case "Dagger":
-                // Dagger ability: Every other defend becomes a 100% evade
-                if(isDefendedLastTurn()) {
-                    System.out.println("Evade Ready!!!");
-                    if(isDefending) {
-                        opponent.setAttack(0);          // Set opponent's attack to 0 (complete evasion)
-                        resetDefendedLastTurn();        // Reset the defended last turn flag
-                    }
-                }
-                break;
-
-            case "Sword":
-                // Sword ability: Gain +10 attack bonus (40 total instead of 30)
-                if(turn == 1) {
-                    setAttack(40);                      // Increase attack value on first turn
-                }
-                break;
-
-            case "Axe":
-                // Axe ability: When charging, gain +5 speed and +5 attack
-                if(isCharging()){
-                    setSpeed(getSpeed() + 5);           // Increase speed while charging
-                    System.out.println(getAttack());   // Debug output showing current attack
-                    setAttack(45);                      // Increase attack while charging (40 + 5)
-                }
-                else {
-                    // Reset axe stats when not charging
-                    setAttack(40);                      // Reset to base axe attack
-                    setSpeed(50 - armor.getSpeedPenalty() - weapon.getSpeedPenalty()); // Recalculate speed
-                }
-                break;
-        }
-    }
-}
+        defendedLastTurn = true;
