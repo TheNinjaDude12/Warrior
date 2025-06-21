@@ -17,6 +17,16 @@ public class Environment {
         this.environmentName = environmentName;
     }
 
+      /**
+     * Retrieves the name of the current environment.
+     *
+     * @return The name of the environment.
+     */
+    public String getEnvironmentName() {
+        return environmentName;
+    }
+
+
     /**
      * Applies environment-specific effects to the warrior and opponent each turn.
      * Different environments have different effects:
@@ -52,15 +62,7 @@ public class Environment {
         // Arena environment has no effects (neutral battlefield)
     }
 
-    /**
-     * Retrieves the name of the current environment.
-     *
-     * @return The name of the environment.
-     */
-    public String getEnvironmentName() {
-        return environmentName;
-    }
-
+  
     /**
      * Sets the name of the environment.
      *
