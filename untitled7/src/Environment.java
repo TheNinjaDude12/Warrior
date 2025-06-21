@@ -1,13 +1,31 @@
+/**
+ * Represents an environment that can apply specific effects to a warrior and opponent during a turn.
+ * The environment can affect both the warrior's and opponent's attributes based on the environment type.
+ */
 public class Environment {
     // Store the name of the current environment
+    /**
+     * The name of the environment (e.g., "Swamp", "Colosseum").
+     */
     private String environmentName;
 
-    // Setter method to assign the environment name
+    /**
+     * Sets the name of the environment.
+     *
+     * @param environmentName The name of the environment to be set.
+     */
     public void setEnvironmentName(String environmentName) {
         this.environmentName = environmentName;
     }
 
-    // Method to apply environment-specific effects to warrior and opponent
+    /**
+     * Applies environment-specific effects to both the warrior and the opponent based on the current environment.
+     * The effects differ depending on whether the environment is "Swamp" or "Colosseum".
+     *
+     * @param warrior The warrior object affected by the environment's effects.
+     * @param opponent The opponent object affected by the environment's effects.
+     * @param turn The current turn in the game, used to calculate damage modifiers.
+     */
     public void environmentEffects(Warrior warrior, Opponent opponent, int turn) {
         // Check if current environment is Swamp
         if (environmentName.equals("Swamp")) {
