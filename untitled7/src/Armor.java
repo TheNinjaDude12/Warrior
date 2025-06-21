@@ -1,8 +1,8 @@
 public class Armor {
     // Armor properties (public for easy access, though private with getters would be better practice)
-    public String name;           // Display name of the armor piece
-    public int defense;           // Defense value provided by this armor
-    public int speedPenalty;      // Speed reduction caused by wearing this armor
+    private String name;           // Display name of the armor piece
+    private int defense;           // Defense value provided by this armor
+    private int speedPenalty;      // Speed reduction caused by wearing this armor
 
     // Constructor to initialize armor with its properties
     public Armor(String name, int defense, int speedPenalty) {
