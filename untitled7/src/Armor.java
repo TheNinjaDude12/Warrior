@@ -1,9 +1,8 @@
 /**
- * Represents an Armor item with its properties such as name, defense value, and speed penalty.
+ * Represents an armor item with properties such as name, defense value, and speed penalty.
+ * Armor can be equipped by a warrior to modify their defensive capabilities and movement speed.
  */
 public class Armor {
-
-    
     /**
      * The name of the armor piece.
      */
@@ -20,7 +19,7 @@ public class Armor {
     private int speedPenalty;      // Speed reduction caused by wearing this armor
 
     /**
-     * Constructs an Armor object with the given name, defense value, and speed penalty.
+     * Constructs an Armor object with the specified name, defense value, and speed penalty.
      *
      * @param name The name of the armor.
      * @param defense The defense value provided by this armor.
@@ -57,5 +56,32 @@ public class Armor {
      */
     public int getSpeedPenalty() {
         return speedPenalty;
+    }
+
+    /**
+     * Sets the name of the armor.
+     *
+     * @param name The name to set for the armor.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Sets the defense value of the armor.
+     *
+     * @param defense The defense value to set.
+     */
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
+
+    /**
+     * Sets the speed penalty of the armor.
+     *
+     * @param speedPenalty The speed penalty to set.
+     */
+    public void setSpeedPenalty(int speedPenalty) {
+        this.speedPenalty = speedPenalty;
     }
 }
