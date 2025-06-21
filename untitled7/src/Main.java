@@ -1,6 +1,5 @@
 import java.util.Scanner;
 
-
 public class Main {
     public static void main(String[] args) {
         Phase2(); // Start the main game loop
@@ -59,6 +58,7 @@ public class Main {
         Weapon dagger = new Weapon("Dagger", 20, 0);     // Low attack, no speed penalty
         Weapon sword = new Weapon("Sword", 30, 10);      // Medium attack, medium speed penalty
         Weapon battleaxe = new Weapon("Axe", 40, 20);    // High attack, high speed penalty
+        Weapon staff = new Weapon("Staff", 30, 20);      // Medium attack, high speed penalty
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Choose your weapon");
@@ -77,6 +77,12 @@ public class Main {
         System.out.println("3. BattleAxe (+40 ATK -20 SPD)");
         System.out.print("""
                 Weapon Ability: When charging, gain 5 speed and 5 attack in the next turn.
+                
+                """);
+        System.out.println("4. Staff (+30 ATK -20 SPD)");
+        System.out.print("""
+                Weapon Ability: When charging, conjure a random element to boost your stats.
+                                Fire: +5 ATK  // Wind: +5 SPD // Water: +10 HP // Earth: +3 DEF
                 """);
 
         // Equip the chosen weapon based on user input
@@ -89,6 +95,9 @@ public class Main {
                 break;
             case 3:
                 warrior.equip(battleaxe);
+                break;
+            case 4:
+                warrior.equip(staff);
         }
         System.out.println("Equipped " + warrior.getWeapon().getName());
         System.out.println("Press any key to continue...");
@@ -425,7 +434,7 @@ public class Main {
         if(warrior.getHitPoints() == 0 && opponent.getHitPoints() == 0) {
             System.out.println("TIE!!!");
         }
-        else if (warrior.getHitPoints() == 0) {
+        else if (warrior.getHitPoints() <= 0) {
             System.out.println("YOU HAVE DIED!");
             System.out.println("Tip: Minecraft exists for players like you"); // Humorous death message
         }
