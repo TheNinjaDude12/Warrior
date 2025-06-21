@@ -1,27 +1,61 @@
+/**
+ * Represents a weapon with attributes such as name, attack value, and speed penalty.
+ * A weapon can be equipped by a warrior to modify their stats.
+ */
 public class Weapon {
     // Weapon properties (public for easy access, though private with getters would be better practice)
+    
+    /**
+     * The name of the weapon (e.g., "Sword", "Dagger", "Axe").
+     */
     public String name;           // Display name of the weapon
+    
+    /**
+     * The attack value provided by this weapon.
+     */
     public int attack;            // Attack value provided by this weapon
+    
+    /**
+     * The speed penalty caused by wielding this weapon.
+     */
     public int speedPenalty;      // Speed reduction caused by wielding this weapon
 
-    // Constructor to initialize weapon with its properties
+    /**
+     * Constructs a Weapon object with the given name, attack value, and speed penalty.
+     *
+     * @param name The name of the weapon.
+     * @param attack The attack value provided by the weapon.
+     * @param speedPenalty The speed penalty caused by wielding the weapon.
+     */
     public Weapon(String name, int attack, int speedPenalty) {
         this.name = name;
         this.attack = attack;
         this.speedPenalty = speedPenalty;
     }
 
-    // Getter method to retrieve attack value
+    /**
+     * Retrieves the attack value provided by this weapon.
+     *
+     * @return The attack value of the weapon.
+     */
     public int getAttack() {
         return attack;
     }
 
-    // Getter method to retrieve speed penalty
+    /**
+     * Retrieves the speed penalty caused by wielding this weapon.
+     *
+     * @return The speed penalty of the weapon.
+     */
     public int getSpeedPenalty() {
         return speedPenalty;
     }
 
-    // Getter method to retrieve weapon name
+    /**
+     * Retrieves the name of the weapon.
+     *
+     * @return The name of the weapon.
+     */
     public String getName() {
         return name;
     }
