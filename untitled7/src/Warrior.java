@@ -143,6 +143,23 @@ public class Warrior {
         return isCharging;
     }
 
+    // Defense state management
+    /**
+     * Checks if the warrior is currently defending.
+     *
+     * @return True if the warrior is defending, false otherwise.
+     */
+    public boolean isDefending() {
+        return isDefending;
+    }
+
+    /**
+     * Resets the warrior's defending state to false.
+     */
+    public void setDefendingFalse() {
+        isDefending = false;
+    }
+
     // Defense state tracking methods (used for dagger weapon ability)
     /**
      * Resets the tracking of whether the warrior defended last turn.
@@ -201,7 +218,7 @@ public class Warrior {
         return armor;
     }
 
-    // Combat action: Attack the opponent
+    // Combat actions
     /**
      * Attacks an opponent and calculates the damage based on whether the warrior is charging
      * and whether the opponent is defending.
@@ -236,9 +253,65 @@ public class Warrior {
         opponent.setHitPoints(opponent.getHitPoints() - damage);    // Apply damage to opponent
     }
 
-    // Combat action: Defend (reduces incoming damage and enables special abilities)
     /**
-     * Activates the warrior's defense, reducing incoming damage.
+     * Activates the warrior's defense, reducing incoming damage by half and tracking defense state for weapon abilities.
      */
     public void defend() {
         defendedLastTurn = true;
+        isDefending = true;
+        System.out.println("WARRIOR IS DEFENDING!!!");
+    }
+
+    /**
+     * Initiates a charge attack, setting up triple damage for the next attack.
+     *
+     * @return True if charging was successful, false if already charging.
+     */
+    public boolean charge() {
+        if (isCharging) {
+            return false; // Already charging
+        }
+        isCharging = true;
+        System.out.println("WARRIOR IS CHARGING!!!");
+        return true;
+    }
+
+    /**
+     * Executes weapon-specific abilities based on the currently equipped weapon and battle conditions.
+     *
+     * @param opponent The opponent in combat.
+     * @param turn The current turn number.
+     */
+    public void weaponAbility(Opponent opponent, int turn) {
+        if (weapon == null) {
+            return; // No weapon equipped
+        }
+
+        switch (weapon.getName()) {
+            case "Dagger":
+                // Dagger ability: Every other defend becomes a 100% evade
+                if (defendedLastTurn && turn % 2 == 0) {
+                    System.out.println("Dagger ability activated: 100% evade!");
+                    // Implementation would involve setting a temporary evade flag
+                }
+                break;
+                
+            case "Sword":
+                // Sword ability: Gain +10 attack when attacking
+                if (!isDefending && !isCharging) {
+                    this.attack += 10;
+                    System.out.println("Sword ability activated: +10 attack!");
+                }
+                break;
+                
+            case "Axe":
+                // Battleaxe ability: When charging, gain +5 speed and +5 attack next turn
+                if (isCharging) {
+                    this.speed += 5;
+                    this.attack += 5;
+                    System.out.println("Battleaxe ability activated: +5 speed and +5 attack!");
+                }
+                break;
+        }
+    }
+}
