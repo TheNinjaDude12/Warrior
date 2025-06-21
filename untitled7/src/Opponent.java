@@ -1,58 +1,144 @@
+/**
+ * Represents an opponent in a combat scenario with attributes such as name, hit points, attack, defense, and speed.
+ * The opponent can perform different combat actions such as attacking, defending, or charging.
+ */
 public class Opponent {
     // Opponent statistics
+    /**
+     * The name/type of the opponent (e.g., "Thief", "Viking", "Minotaur").
+     */
     private String name;            // Name/type of the opponent (Thief, Viking, Minotaur)
+    
+    /**
+     * Health points of the opponent. The opponent dies when this reaches 0.
+     */
     private int hitPoints;          // Health points - opponent dies when this reaches 0
+    
+    /**
+     * The attack damage value of the opponent.
+     */
     private int attack;             // Attack damage value
+    
+    /**
+     * The defense value of the opponent. Reduces incoming damage.
+     */
     private int defense;            // Defense value (reduces incoming damage)
+    
+    /**
+     * The speed value of the opponent. Determines the turn order.
+     */
     private int speed;              // Speed value (determines turn order)
 
     // Battle state tracking
+    /**
+     * True when the opponent is charging for the next attack (triple damage).
+     */
     private boolean isCharging = false;     // True when opponent is charging for next attack
+    
+    /**
+     * True when the opponent is currently defending (halves incoming damage).
+     */
     private boolean isDefending = false;    // True when opponent is currently defending
 
     // Getter methods for accessing opponent statistics
+    /**
+     * Retrieves the name of the opponent.
+     *
+     * @return The name/type of the opponent.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Retrieves the hit points of the opponent.
+     *
+     * @return The opponent's current hit points.
+     */
     public int getHitPoints() {
         return hitPoints;
     }
 
+    /**
+     * Retrieves the attack value of the opponent.
+     *
+     * @return The opponent's attack value.
+     */
     public int getAttack() {
         return attack;
     }
 
+    /**
+     * Retrieves the defense value of the opponent.
+     *
+     * @return The opponent's defense value.
+     */
     public int getDefense() {
         return defense;
     }
 
+    /**
+     * Retrieves the speed value of the opponent.
+     *
+     * @return The opponent's speed value.
+     */
     public int getSpeed() {
         return speed;
     }
 
     // Setter methods for modifying opponent statistics
+    /**
+     * Sets the name/type of the opponent.
+     *
+     * @param name The name/type of the opponent.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Sets the hit points of the opponent.
+     *
+     * @param hitPoints The hit points to be set for the opponent.
+     */
     public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
     }
 
+    /**
+     * Sets the attack value of the opponent.
+     *
+     * @param attack The attack value to be set for the opponent.
+     */
     public void setAttack(int attack) {
         this.attack = attack;
     }
 
+    /**
+     * Sets the defense value of the opponent.
+     *
+     * @param defense The defense value to be set for the opponent.
+     */
     public void setDefense(int defense) {
         this.defense = defense;
     }
 
+    /**
+     * Sets the speed value of the opponent.
+     *
+     * @param speed The speed value to be set for the opponent.
+     */
     public void setSpeed(int speed){
         this.speed = speed;
     }
 
     // Combat action: Attack the warrior
+    /**
+     * Attacks the warrior and calculates the damage based on whether the opponent is charging,
+     * and whether the warrior is defending.
+     *
+     * @param warrior The warrior to be attacked.
+     */
     public void attack(Warrior warrior) {
         int damage;
 
@@ -68,7 +154,7 @@ public class Opponent {
 
         // Check if warrior is defending (halves damage)
         if(warrior.isDefending()) {
-            damage = damage/2;                                      // Defending reduces damage by half
+            damage = damage / 2;                                      // Defending reduces damage by half
             warrior.setDefendingFalse();                            // Reset warrior's defending state
         }
 
@@ -77,30 +163,51 @@ public class Opponent {
             damage = 0;
         }
 
-        System.out.println(getName()+ " attacks Warrior for " + damage + " damage!\n") ;
+        System.out.println(getName()+ " attacks Warrior for " + damage + " damage!\n");
         warrior.setHitPoints(warrior.getHitPoints() - damage);      // Apply damage to warrior
     }
 
     // Combat action: Defend (reduces incoming damage by half)
+    /**
+     * Sets the opponent to a defending state, which halves the incoming damage.
+     */
     public void defend() {
         isDefending = true;         // Set defending state
     }
 
     // Defense state management
+    /**
+     * Returns whether the opponent is currently defending.
+     *
+     * @return true if the opponent is defending, false otherwise.
+     */
     public boolean isDefending() {
         return isDefending;
     }
 
+    /**
+     * Resets the opponent's defending state to false.
+     */
     public void setDefendingFalse() {
         isDefending = false;
     }
 
     // Combat action: Charge for next attack (enables triple damage on next attack)
+    /**
+     * Sets the opponent to a charging state, enabling triple damage for the next attack.
+     */
     public void charge() {
         isCharging = true;          // Set charging state
     }
 
     // AI decision making - determines opponent's action based on their type and turn pattern
+    /**
+     * Determines the opponent's action based on their type and turn pattern.
+     * The opponent can either attack, defend, or charge depending on their type.
+     *
+     * @param warrior The warrior involved in the combat.
+     * @param faux A value representing the current turn in the pattern (used for AI decision-making).
+     */
     public void think(Warrior warrior, int faux) {
         switch(getName()) {
             case "Thief":
