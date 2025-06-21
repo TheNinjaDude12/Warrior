@@ -127,9 +127,12 @@ public class Main {
     // Allow player to choose opponent with different stat distributions
     public static Opponent chooseOpponent() {
         Scanner sc = new Scanner(System.in);
+        Opponent thief = new Opponent("Thief", 150, 20, 20, 40);
+        Opponent viking = new Opponent("Viking", 250, 30, 30, 30);
+        Opponent minotaur = new Opponent("Minotaur", 350, 40, 40, 20);
 
         while (true) {
-            Opponent opponent = new Opponent();
+            Opponent opponent;
             System.out.println("""
                     Choose your Opponent
                     1. Thief
@@ -147,27 +150,15 @@ public class Main {
             // Set opponent stats based on selection
             switch (input) {
                 case 1: // Fast, low health glass cannon
-                    opponent.setName("Thief");
-                    opponent.setHitPoints(150);
-                    opponent.setAttack(20);
-                    opponent.setDefense(20);
-                    opponent.setSpeed(40);
+                    opponent = thief;
                     System.out.println("Thief Selected");
                     break;
                 case 2: // Balanced stats
-                    opponent.setName("Viking");
-                    opponent.setHitPoints(250);
-                    opponent.setAttack(30);
-                    opponent.setDefense(30);
-                    opponent.setSpeed(30);
+                    opponent = viking;
                     System.out.println("Viking Selected");
                     break;
                 case 3: // Tank with high health/defense, low speed
-                    opponent.setName("Minotaur");
-                    opponent.setHitPoints(350);
-                    opponent.setAttack(40);
-                    opponent.setDefense(40);
-                    opponent.setSpeed(20);
+                    opponent = minotaur;
                     System.out.println("Minotaur Selected");
                     break;
                 default:
