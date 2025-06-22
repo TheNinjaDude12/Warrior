@@ -139,6 +139,8 @@ public class Main {
         Opponent thief = new Opponent("Thief", 150, 20, 20, 40);
         Opponent viking = new Opponent("Viking", 250, 30, 30, 30);
         Opponent minotaur = new Opponent("Minotaur", 350, 40, 40, 20);
+        Opponent magician = new Opponent("Magician", 300, 30, 30, 30);
+
 
         while (true) {
             Opponent opponent;
@@ -150,6 +152,8 @@ public class Main {
                         250 HP // 30 ATK // 30 DEF // 30 SPD
                     3. Minotaur
                         350 HP // 40 ATK // 40 DEF // 20 SPD
+                    4. Magician
+                        300 HP // 30 ATK // 30 DEF // 30 SPD
                     
                     Choice:"""
             );
@@ -168,6 +172,10 @@ public class Main {
                     break;
                 case 3: // Tank with high health/defense, low speed
                     opponent = minotaur;
+                    System.out.println("Minotaur Selected");
+                    break;
+                 case 4:  // Mage, balanced stats with magic
+                    opponent = magician;
                     System.out.println("Minotaur Selected");
                     break;
                 default:
@@ -436,7 +444,7 @@ public class Main {
         }
         else if (warrior.getHitPoints() <= 0) {
             System.out.println("YOU HAVE DIED!");
-            System.out.println("Tip: Minecraft exists for players like you"); // Humorous death message
+            System.out.println("Tip: Minecraft exists for players like you"); 
         }
 
         else {
