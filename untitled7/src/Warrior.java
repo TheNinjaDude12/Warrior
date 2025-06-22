@@ -2,26 +2,24 @@
  * Represents a Warrior in a combat scenario with attributes such as health points, attack, defense, speed, and equipment.
  * The warrior can perform actions such as attacking, defending, charging, and using weapon abilities.
  */
-
 import java.util.Random;
-
 public class Warrior {
     // Base warrior statistics
     /**
      * Health points of the warrior. The warrior dies when this reaches 0.
      */
     private int hitPoints = 100;    // Health points - warrior dies when this reaches 0
-    
+
     /**
      * Base attack value of the warrior. Modified by the weapon.
      */
     private int attack = 1;         // Base attack value (modified by weapon)
-    
+
     /**
      * Base defense value of the warrior. Modified by the armor.
      */
     private int defense = 1;        // Base defense value (modified by armor)
-    
+
     /**
      * Base speed value of the warrior. Modified by the equipment.
      */
@@ -29,12 +27,12 @@ public class Warrior {
 
     // Equipment slots
     /**
-     * Currently equipped armor. 
+     * Currently equipped armor.
      */
     private Armor armor;            // Currently equipped armor
-    
+
     /**
-     * Currently equipped weapon. 
+     * Currently equipped weapon.
      */
     public Weapon weapon;           // Currently equipped weapon (public for easy access)
 
@@ -43,18 +41,19 @@ public class Warrior {
      * Tracks if the warrior defended on the previous turn. Used for weapon abilities like the Dagger's evade.
      */
     private boolean defendedLastTurn = false;  // Tracks if warrior defended on previous turn (for dagger ability)
-    
+
     /**
      * True when the warrior is currently defending, reducing incoming damage.
      */
     private boolean isDefending = false;       // True when warrior is currently defending
-    
+
     /**
      * True when the warrior is currently charging for the next attack (triple damage).
      */
     private boolean isCharging = false;        // True when warrior is currently charging for next attack
 
     // Getter methods for accessing private attributes
+
     /**
      * Retrieves the warrior's current hit points.
      *
@@ -128,6 +127,7 @@ public class Warrior {
     }
 
     // Charging state management
+
     /**
      * Sets the warrior's charging state, allowing triple damage on the next attack.
      *
@@ -147,6 +147,7 @@ public class Warrior {
     }
 
     // Defense state management
+
     /**
      * Checks if the warrior is currently defending.
      *
@@ -159,11 +160,12 @@ public class Warrior {
     /**
      * Resets the warrior's defending state to false.
      */
-    public void setDefendingFalse() {
-        isDefending = false;
+    public void setDefending(boolean state) {
+        isDefending = state;
     }
 
     // Defense state tracking methods (used for dagger weapon ability)
+
     /**
      * Resets the tracking of whether the warrior defended last turn.
      */
@@ -181,6 +183,7 @@ public class Warrior {
     }
 
     // Equipment methods
+
     /**
      * Equips a weapon and applies its stat modifications to the warrior.
      *
@@ -222,6 +225,7 @@ public class Warrior {
     }
 
     // Combat actions
+
     /**
      * Attacks an opponent and calculates the damage based on whether the warrior is charging
      * and whether the opponent is defending.
@@ -232,23 +236,22 @@ public class Warrior {
         int damage;
 
         // Check if this is a charged attack (triple damage)
-        if(isCharging) {
+        if (isCharging) {
             System.out.println("WARRIOR CHARGED, ATTACK WILL DO TRIPLE DAMAGE!!!");
             damage = (getAttack() * 3 - opponent.getDefense());     // Triple damage minus opponent's defense
             isCharging = false;                                     // Reset charging state after use
-        }
-        else{
+        } else {
             damage = (getAttack() - opponent.getDefense());         // Normal damage calculation
         }
 
         // Check if opponent is defending (halves damage)
-        if(opponent.isDefending()) {
+        if (opponent.isDefending()) {
             damage = damage / 2;                                      // Defending reduces damage by half
-            opponent.setDefendingFalse();                           // Reset opponent's defending state
+            opponent.setDefending(false);                           // Reset opponent's defending state
         }
 
         // Ensure damage is never negative
-        if(damage < 0) {
+        if (damage < 0) {
             damage = 0;
         }
 
@@ -283,7 +286,7 @@ public class Warrior {
      * Executes weapon-specific abilities based on the currently equipped weapon and battle conditions.
      *
      * @param opponent The opponent in combat.
-     * @param turn The current turn number.
+     * @param turn     The current turn number.
      */
     public void weaponAbility(Opponent opponent, int turn) {
         if (weapon == null) {
@@ -293,12 +296,16 @@ public class Warrior {
         switch (weapon.getName()) {
             case "Dagger":
                 // Dagger ability: Every other defend becomes a 100% evade
-                if (defendedLastTurn && turn % 2 == 0) {
+                if (defendedLastTurn) {
                     System.out.println("Dagger ability activated: 100% evade!");
-                    // Implementation would involve setting a temporary evade flag
+                    if (isDefending()) {
+                        opponent.setAttack(0);
+                        defendedLastTurn = false;
+                    }
+
                 }
                 break;
-                
+
             case "Sword":
                 // Sword ability: Gain +10 attack when attacking
                 if (!isDefending && !isCharging) {
@@ -306,7 +313,7 @@ public class Warrior {
                     System.out.println("Sword ability activated: +10 attack!");
                 }
                 break;
-                
+
             case "Axe":
                 // Battleaxe ability: When charging, gain +5 speed and +5 attack next turn
                 if (isCharging) {
@@ -315,7 +322,6 @@ public class Warrior {
                     System.out.println("Battleaxe ability activated: +5 speed and +5 attack!");
                 }
                 break;
-
             case "Staff":
                 // Staff Ability: When charging, gain a random element that grants you stats.
                 Random r = new Random();
@@ -349,6 +355,5 @@ public class Warrior {
                         }
                 }
         }
-
     }
 }
