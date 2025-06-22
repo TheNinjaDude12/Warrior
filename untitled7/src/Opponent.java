@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Represents an opponent in a combat scenario with attributes such as name, hit points, attack, defense, and speed.
  * The opponent can perform different combat actions such as attacking, defending, or charging.
@@ -177,6 +179,40 @@ public class Opponent {
             damage = 0;
         }
 
+        if(name.equals("Magician")) {
+            Random r = new Random();
+            switch (r.nextInt(5)) {
+                case 1:
+                    // Fire
+                    if (isCharging) {
+                        this.attack += 5;
+                        System.out.println("Magician ability activated: Fire! +5 attack!");
+                    }
+                    break;
+                case 2:
+                    // Wind
+                    if (isCharging) {
+                        this.speed += 5;
+                        System.out.println("Magician ability activated: Wind! +5 speed!");
+                    }
+                    break;
+                case 3:
+                    // Water
+                    if (isCharging) {
+                        this.hitPoints += 10;
+                        System.out.println("Magician ability activated: Water! +10 health!");
+                    }
+                    break;
+                case 4:
+                    // Earth
+                    if (isCharging) {
+                        this.defense += 3;
+                        System.out.println("Magician ability activated: Earth! +3 defense!");
+                    }
+
+            }
+        }
+
         System.out.println(getName()+ " attacks Warrior for " + damage + " damage!\n");
         warrior.setHitPoints(warrior.getHitPoints() - damage);      // Apply damage to warrior
     }
@@ -202,8 +238,8 @@ public class Opponent {
     /**
      * Resets the opponent's defending state to false.
      */
-    public void setDefendingFalse() {
-        isDefending = false;
+    public void setDefending(boolean state) {
+        isDefending = state;
     }
 
     // Combat action: Charge for next attack (enables triple damage on next attack)
@@ -250,6 +286,21 @@ public class Opponent {
                         break;
                     case 2:         // Turn 2: Charge for next turn
                         System.out.println("MINOTAUR IS CHARGING!!!");
+                        charge();
+                        break;
+                    case 3:         // Turn 3: Attack (will be charged attack from turn 2)
+                        attack(warrior);
+                        break;
+                }
+                break;
+            case "Magician":
+                // Minotaur AI: Attack, charge, attack pattern (uses charge for big damage)
+                switch (faux) {
+                    case 1:         // Turn 1: Attack
+                        attack(warrior);
+                        break;
+                    case 2:         // Turn 2: Charge for next turn
+                        System.out.println("MAGE IS CHARGING!!!");
                         charge();
                         break;
                     case 3:         // Turn 3: Attack (will be charged attack from turn 2)
