@@ -179,39 +179,7 @@ public class Opponent {
             damage = 0;
         }
 
-        if(name.equals("Magician")) {
-            Random r = new Random();
-            switch (r.nextInt(5)) {
-                case 1:
-                    // Fire
-                    if (isCharging) {
-                        this.attack += 5;
-                        System.out.println("Magician ability activated: Fire! +5 attack!");
-                    }
-                    break;
-                case 2:
-                    // Wind
-                    if (isCharging) {
-                        this.speed += 5;
-                        System.out.println("Magician ability activated: Wind! +5 speed!");
-                    }
-                    break;
-                case 3:
-                    // Water
-                    if (isCharging) {
-                        this.hitPoints += 10;
-                        System.out.println("Magician ability activated: Water! +10 health!");
-                    }
-                    break;
-                case 4:
-                    // Earth
-                    if (isCharging) {
-                        this.defense += 3;
-                        System.out.println("Magician ability activated: Earth! +3 defense!");
-                    }
 
-            }
-        }
 
         System.out.println(getName()+ " attacks Warrior for " + damage + " damage!\n");
         warrior.setHitPoints(warrior.getHitPoints() - damage);      // Apply damage to warrior
@@ -247,7 +215,38 @@ public class Opponent {
      * Sets the opponent to a charging state, enabling triple damage for the next attack.
      */
     public void charge() {
-        isCharging = true;          // Set charging state
+        isCharging = true;
+        if(name.equals("Magician")) {
+            Random r = new Random();
+            switch (r.nextInt(5)) {
+                case 1:
+                    // Fire
+                        this.attack += 5;
+                        System.out.println("Magician ability activated: Fire! +5 attack!");
+                    break;
+                case 2:
+                    // Wind
+
+                        this.speed += 5;
+                        System.out.println("Magician ability activated: Wind! +5 speed!");
+
+                    break;
+                case 3:
+                    // Water
+
+                        this.hitPoints += 10;
+                        System.out.println("Magician ability activated: Water! +10 health!");
+
+                    break;
+                case 4:
+                    // Earth
+
+                        this.defense += 3;
+                        System.out.println("Magician ability activated: Earth! +3 defense!");
+
+
+            }
+        }// Set charging state
     }
 
     // AI decision making - determines opponent's action based on their type and turn pattern
