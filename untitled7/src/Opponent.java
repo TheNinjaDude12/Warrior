@@ -150,6 +150,8 @@ public class Opponent {
 
     /**
      * Resets the opponent's defending state to false.
+     *
+     * @param state sets the state for whether the opponent is defending.
      */
     public void setDefending(boolean state) {
         isDefending = state;

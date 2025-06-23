@@ -3,6 +3,11 @@
  * The warrior can perform actions such as attacking, defending, charging, and using weapon abilities.
  */
 import java.util.Random;
+
+/**
+ * Represents the warrior in a combat scenario with attributes such as hit points, attack, defense, and speed.
+ * The warrior can perform different combat actions such as attacking, defending, or charging and also has a unique weapon ability.
+ */
 public class Warrior {
     // Base warrior statistics
     /**
@@ -154,6 +159,8 @@ public class Warrior {
 
     /**
      * Sets the warrior's defending state.
+     *
+     *  @param state sets the state for whether the warrior is defending.
      */
     public void setDefending(boolean state) {
         isDefending = state;
