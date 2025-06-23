@@ -11,7 +11,7 @@ public class Opponent {
     /**
      * The name/type of the opponent (e.g., "Thief", "Viking", "Minotaur").
      */
-    private String name;            // Name/type of the opponent (Thief, Viking, Minotaur)
+    private final String name;            // Name/type of the opponent (Thief, Viking, Minotaur)
 
     /**
      * Health points of the opponent. The opponent dies when this reaches 0.

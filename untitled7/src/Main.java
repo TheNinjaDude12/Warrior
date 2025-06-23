@@ -537,6 +537,7 @@ public class Main {
         int faux = 1;
         int turn = 1;
         int opponentAttack = opponent.getAttack();
+        int warriorAttack = warrior.getAttack();
 
         // Pre-battle screen
         addSpacing();
@@ -562,9 +563,12 @@ public class Main {
             addSpacing();
 
             // Apply effects
-            warrior.weaponAbility(opponent);
+
             opponent.setAttack(opponentAttack);
             warrior.setDefense(warrior.getArmor().getDefense());
+            warrior.setSpeed(50 - warrior.getArmor().getSpeedPenalty() - warrior.getWeapon().getSpeedPenalty());
+            warrior.setAttack(warriorAttack);
+            warrior.weaponAbility(opponent);
             environment.environmentEffects(warrior, opponent, turn);
 
             // Display battle status

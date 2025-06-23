@@ -123,14 +123,7 @@ public class Warrior {
         this.hitPoints = hitPoints;
     }
 
-    /**
-     * Sets the warrior's defense value.
-     *
-     * @param defense The attack value to be set.
-     */
-    public void setDefense(int defense) {
-        this.defense = defense;
-    }
+
 
     /**
      * Sets the warrior's attack value.
@@ -142,11 +135,30 @@ public class Warrior {
     }
 
     /**
+     * Sets the warrior's defense value.
+     *
+     * @param defense The attack value to be set.
+     */
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
+
+    /**
+     * Sets the warrior's speed value.
+     *
+     * @param speed The speed value to be set.
+     */
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    /**
      * Sets the warrior's defending state.
      */
     public void setDefending(boolean state) {
         isDefending = state;
     }
+
 
 
 
