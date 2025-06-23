@@ -1,25 +1,45 @@
 import java.util.Scanner;
 
+/**
+ * Main class for a text-based battle game. Handles the console display, user input,
+ * game setup, and main game loop where the player creates a warrior, chooses an
+ * opponent, environment, and then battles the opponent in turn-based combat.
+ */
 public class Main {
-    // Console dimensions for centering
     private static final int CONSOLE_WIDTH = 80;
 
+    /**
+     * Main method to start the game. Initializes the game by calling the Phase2 method,
+     * which handles the main game loop.
+     *
+     * @param args command-line arguments (not used in this game)
+     */
     public static void main(String[] args) {
-        Phase2(); // Start the main game loop
+        Phase2();
     }
 
-    // Utility method to center text
+    /**
+     * Centers the given text on the console.
+     *
+     * @param text the text to be centered
+     */
     public static void centerText(String text) {
         int padding = (CONSOLE_WIDTH - text.length()) / 2;
         System.out.println(" ".repeat(Math.max(0, padding)) + text);
     }
 
-    // Create a horizontal line separator
+    /**
+     * Prints a horizontal separator line across the console.
+     */
     public static void printSeparator() {
         System.out.println("=".repeat(CONSOLE_WIDTH));
     }
 
-    // Create a simple box around text
+    /**
+     * Prints the given text inside a box format on the console.
+     *
+     * @param lines an array of strings representing the content to be displayed in the box
+     */
     public static void printBox(String[] lines) {
         int maxLength = 0;
         for (String line : lines) {
@@ -27,27 +47,25 @@ public class Main {
                 maxLength = line.length();
             }
         }
-        maxLength += 4; // Add padding
-
-        // Top border
+        maxLength += 4;
         System.out.println("+" + "-".repeat(maxLength) + "+");
-
-        // Content with side borders
         for (String line : lines) {
             int padding = maxLength - line.length() - 2;
             System.out.println("| " + line + " ".repeat(padding) + " |");
         }
-
-        // Bottom border
         System.out.println("+" + "-".repeat(maxLength) + "+");
     }
 
-    // Add some blank lines for spacing
+    /**
+     * Prints some blank lines to provide spacing between sections.
+     */
     public static void addSpacing() {
         System.out.println("\n\n\n");
     }
 
-    // Display game title with ASCII art
+    /**
+     * Displays the game title with ASCII art and waits for user input to proceed.
+     */
     public static void displayTitle() {
         Scanner sc = new Scanner(System.in);
         addSpacing();
@@ -65,14 +83,16 @@ public class Main {
         sc.nextLine();
     }
 
-    // Display current warrior statistics in a styled box
+    /**
+     * Displays the warrior's statistics in a styled box format.
+     *
+     * @param warrior the warrior whose stats are displayed
+     */
     public static void showStats(Warrior warrior) {
         addSpacing();
-
         System.out.println();
         centerText("WARRIOR STATISTICS");
         System.out.println();
-
         String[] statsLines = {
                 "+----------------------------+",
                 "|      CURRENT STATS         |",
@@ -83,26 +103,25 @@ public class Main {
                 String.format("|  SPD: %-3d                  |", warrior.getSpeed()),
                 "+----------------------------+"
         };
-
         for (String line : statsLines) {
             centerText(line);
         }
-
         System.out.println();
         centerText("Press Enter to continue...");
         Scanner sc = new Scanner(System.in);
         sc.nextLine();
     }
 
-    // Allow player to choose armor with enhanced visual display
+    /**
+     * Prompts the player to choose an armor type, displaying the available options and their effects.
+     *
+     * @param warrior the warrior who will equip the chosen armor
+     */
     public static void chooseArmor(Warrior warrior) {
         addSpacing();
-
-
         System.out.println();
         centerText("ARMOR SELECTION");
         System.out.println();
-
         String[] armorOptions = {
                 "CHOOSE YOUR ARMOR",
                 "",
@@ -112,25 +131,19 @@ public class Main {
                 "",
                 "Quick & Agile       Balanced Protection   Maximum Defense"
         };
-
         printBox(armorOptions);
-
         System.out.println();
         centerText("Enter your choice (1-3): ");
-
         Armor lightArmor = new Armor("Light Armor", 20, 5);
         Armor mediumArmor = new Armor("Medium Armor", 30, 15);
         Armor heavyArmor = new Armor("Heavy Armor", 40, 25);
-
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
-
         switch (choice) {
             case 1 -> warrior.equip(lightArmor);
             case 2 -> warrior.equip(mediumArmor);
             case 3 -> warrior.equip(heavyArmor);
         }
-
         System.out.println();
         centerText("Equipped: " + warrior.getArmor().getName());
         centerText("Press Enter to continue...");
@@ -138,71 +151,68 @@ public class Main {
         sc.nextLine();
     }
 
-    // Allow player to choose weapon with enhanced visual display
+    /**
+     * Prompts the player to choose a weapon type, displaying the available options and their effects.
+     *
+     * @param warrior the warrior who will equip the chosen weapon
+     */
     public static void chooseWeapon(Warrior warrior) {
         addSpacing();
-
         System.out.println();
         centerText("WEAPON SELECTION");
         System.out.println();
-
         centerText("CHOOSE YOUR WEAPON");
         System.out.println();
-
-        // Display each weapon option
         String[] daggerInfo = {
                 "[1] DAGGER (20 ATK)",
                 "Special: Every other defend becomes 100% evade"
         };
         printBox(daggerInfo);
         System.out.println();
-
         String[] swordInfo = {
                 "[2] SWORD (30 ATK, -10 SPD)",
                 "Special: +10 bonus attack damage when attacking"
         };
         printBox(swordInfo);
         System.out.println();
-
         String[] axeInfo = {
                 "[3] BATTLE AXE (40 ATK, -20 SPD)",
                 "Special: Charging grants +5 SPD and +5 ATK next turn"
         };
         printBox(axeInfo);
         System.out.println();
-
         String[] staffInfo = {
                 "[4] STAFF (30 ATK, -20 SPD)",
                 "Special: Charging conjures random element boost",
                 "Fire: +5 ATK | Wind: +5 SPD | Water: +10 HP | Earth: +3 DEF"
         };
         printBox(staffInfo);
-
         System.out.println();
         centerText("Enter your choice (1-4): ");
-
         Weapon dagger = new Weapon("Dagger", 20, 0);
         Weapon sword = new Weapon("Sword", 30, 10);
         Weapon battleaxe = new Weapon("Axe", 40, 20);
         Weapon staff = new Weapon("Staff", 30, 20);
-
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
-
         switch (choice) {
             case 1 -> warrior.equip(dagger);
             case 2 -> warrior.equip(sword);
             case 3 -> warrior.equip(battleaxe);
             case 4 -> warrior.equip(staff);
         }
-
         System.out.println();
         centerText("Equipped: " + warrior.getWeapon().getName());
         centerText("Press Enter to continue...");
         sc.nextLine();
     }
 
-    // Handle complete character creation process
+    /**
+     * Handles the complete character creation process, displaying the warrior's stats,
+     * allowing the player to choose armor and weapons, and confirming the character setup.
+     *
+     * @return the fully created warrior character
+     */
     public static Warrior characterCreation() {
         displayTitle();
         Scanner sc = new Scanner(System.in);
@@ -210,29 +220,23 @@ public class Main {
             System.out.println();
             centerText("WARRIOR SETUP");
             System.out.println();
-
             Warrior warrior = new Warrior();
-
             showStats(warrior);
             chooseArmor(warrior);
             showStats(warrior);
             chooseWeapon(warrior);
             showStats(warrior);
-
             addSpacing();
             System.out.println();
             centerText("CHARACTER CONFIRMATION");
             System.out.println();
-
             String[] confirmOptions = {
                     "Proceed with this warrior?",
                     "",
                     "[1] Continue",
                     "[2] Reset Character"
             };
-
             printBox(confirmOptions);
-
             System.out.println();
             centerText("Choice: ");
             String confirm = sc.nextLine();
@@ -242,20 +246,22 @@ public class Main {
         }
     }
 
-    // Enhanced opponent selection with visual improvements
+    /**
+     * Prompts the player to choose an opponent, displaying available options.
+     *
+     * @return the selected opponent
+     */
     public static Opponent chooseOpponent() {
         Scanner sc = new Scanner(System.in);
         Opponent thief = new Opponent("Thief", 150, 20, 20, 40);
         Opponent viking = new Opponent("Viking", 250, 30, 30, 30);
         Opponent minotaur = new Opponent("Minotaur", 350, 40, 40, 20);
         Opponent magician = new Opponent("Magician", 300, 30, 30, 30);
-
         while (true) {
             addSpacing();
             System.out.println();
             centerText("OPPONENT SELECTION");
             System.out.println();
-
             String[] opponentOptions = {
                     "CHOOSE YOUR OPPONENT",
                     "",
@@ -270,17 +276,13 @@ public class Main {
                     "[4] MAGICIAN (300 HP / 30 ATK / 30 DEF / 30 SPD)",
                     "    Mysterious Spell Caster"
             };
-
             printBox(opponentOptions);
-
             System.out.println();
             centerText("Choice: ");
             int input = sc.nextInt();
             sc.nextLine();
-
             Opponent opponent;
             String selectedName = "";
-
             switch (input) {
                 case 1:
                     opponent = thief;
@@ -304,20 +306,16 @@ public class Main {
                     sc.nextLine();
                     continue;
             }
-
             System.out.println();
             centerText(selectedName + " Selected!");
             System.out.println();
-
             String[] confirmOptions = {
                     "Proceed with this opponent?",
                     "",
                     "[1] Continue",
                     "[2] Reset Selection"
             };
-
             printBox(confirmOptions);
-
             System.out.println();
             centerText("Choice: ");
             String confirm = sc.nextLine();
@@ -327,29 +325,29 @@ public class Main {
         }
     }
 
-    // Enhanced environment selection
+    /**
+     * Prompts the player to choose an environment, displaying available options and effects.
+     *
+     * @return the selected environment
+     */
     public static Environment chooseEnvironment() {
         Scanner sc = new Scanner(System.in);
         Environment arena = new Environment("Arena");
         Environment swamp = new Environment("Swamp");
         Environment colosseum = new Environment("Colosseum");
-
         while (true) {
             addSpacing();
             System.out.println();
             centerText("ENVIRONMENT SELECTION");
             System.out.println();
-
             centerText("CHOOSE YOUR BATTLEFIELD");
             System.out.println();
-
             String[] arenaInfo = {
                     "[1] ARENA",
                     "Effect: No buffs or penalties - Fair fight!"
             };
             printBox(arenaInfo);
             System.out.println();
-
             String[] swampInfo = {
                     "[2] SWAMP",
                     "Effect: Player loses 1 HP per turn",
@@ -357,22 +355,18 @@ public class Main {
             };
             printBox(swampInfo);
             System.out.println();
-
             String[] colosseumInfo = {
                     "[3] COLOSSEUM",
                     "Effect: Player gains 1 ATK per turn",
                     "        Opponent loses 1 DEF per turn"
             };
             printBox(colosseumInfo);
-
             System.out.println();
             centerText("Choice: ");
             int input = sc.nextInt();
             sc.nextLine();
-
             Environment environment;
             String selectedName = "";
-
             switch (input) {
                 case 1:
                     environment = arena;
@@ -392,20 +386,16 @@ public class Main {
                     sc.nextLine();
                     continue;
             }
-
             System.out.println();
             centerText(selectedName + " Selected!");
             System.out.println();
-
             String[] confirmOptions = {
                     "Proceed with this environment?",
                     "",
                     "[1] Continue",
                     "[2] Reset Selection"
             };
-
             printBox(confirmOptions);
-
             System.out.println();
             centerText("Choice: ");
             String confirm = sc.nextLine();
@@ -415,7 +405,11 @@ public class Main {
         }
     }
 
-    // Enhanced move selection with visual improvements
+    /**
+     * Prompts the player to choose a move during combat (Attack, Defend, Charge).
+     *
+     * @return the selected move choice (1 for attack, 2 for defend, 3 for charge)
+     */
     public static int warriorMove() {
         Scanner sc = new Scanner(System.in);
         while (true) {
@@ -427,13 +421,10 @@ public class Main {
                     "[2] DEFEND",
                     "[3] CHARGE"
             };
-
             printBox(moveOptions);
-
             System.out.println();
             centerText("Choice: ");
             int choice = sc.nextInt();
-
             if (choice >= 1 && choice <= 3) {
                 return choice;
             } else {
@@ -443,22 +434,36 @@ public class Main {
         }
     }
 
-    // Check if warrior is dead
+    /**
+     * Checks if the warrior is dead.
+     *
+     * @param warrior the warrior to be checked
+     * @return true if the warrior's HP is 0 or below, false otherwise
+     */
     public static boolean isDead(Warrior warrior) {
         return warrior.getHitPoints() <= 0;
     }
 
-    // Check if opponent is dead
+    /**
+     * Checks if the opponent is dead.
+     *
+     * @param opponent the opponent to be checked
+     * @return true if the opponent's HP is 0 or below, false otherwise
+     */
     public static boolean isDead(Opponent opponent) {
         return opponent.getHitPoints() <= 0;
     }
 
-    // Enhanced opponent move prediction
+    /**
+     * Predicts the next move of the opponent based on their current state and logic.
+     *
+     * @param opponent the opponent whose move is being predicted
+     * @param faux an integer representing the turn or sequence for prediction
+     */
     public static void predictMove(Opponent opponent, int faux) {
         System.out.println();
         centerText("OPPONENT PREDICTION");
         System.out.println();
-
         String prediction = "";
         switch (opponent.getName()) {
             case "Thief":
@@ -499,20 +504,23 @@ public class Main {
                 }
                 break;
         }
-
         String[] predictionBox = {
                 "WARNING: " + prediction
         };
         printBox(predictionBox);
     }
 
-    // Enhanced battle stats display
+    /**
+     * Displays the battle stats for both the warrior and the opponent during the combat.
+     *
+     * @param warrior the player's warrior
+     * @param opponent the selected opponent
+     */
     public static void displayBattleStats(Warrior warrior, Opponent opponent) {
         System.out.println();
         printSeparator();
         centerText("BATTLE STATUS");
         printSeparator();
-
         String[] battleStats = {
                 "BATTLE STATS",
                 "",
@@ -522,29 +530,25 @@ public class Main {
                 String.format("OPPONENT    |  HP: %-3d  |  ATK: %-3d  |  DEF: %-3d  |  SPD: %-3d",
                         opponent.getHitPoints(), opponent.getAttack(), opponent.getDefense(), opponent.getSpeed())
         };
-
         printBox(battleStats);
     }
 
-    // Main game loop with enhanced visual presentation
+    /**
+     * Main game loop where the player fights against the opponent.
+     * Handles combat, player moves, and opponent responses.
+     */
     public static void Phase2() {
-        // Setup phase
         Warrior warrior = characterCreation();
         Opponent opponent = chooseOpponent();
         Environment environment = chooseEnvironment();
-
-        // Battle variables
         int faux = 1;
         int turn = 1;
         int opponentAttack = opponent.getAttack();
         int warriorAttack = warrior.getAttack();
-
-        // Pre-battle screen
         addSpacing();
         System.out.println();
         centerText("BATTLE BEGINS!");
         System.out.println();
-
         String[] battleIntro = {
                 "WARRIOR vs " + opponent.getName().toUpperCase(),
                 "Location: " + environment.getEnvironmentName(),
@@ -552,36 +556,23 @@ public class Main {
                 "PREPARE FOR COMBAT!"
         };
         printBox(battleIntro);
-
         Scanner sc = new Scanner(System.in);
         System.out.println();
         centerText("Press Enter to start battle...");
         sc.nextLine();
-
-        // Main battle loop
         while (true) {
             addSpacing();
-
-            // Apply effects
-
             opponent.setAttack(opponentAttack);
             warrior.setDefense(warrior.getArmor().getDefense());
             warrior.setSpeed(50 - warrior.getArmor().getSpeedPenalty() - warrior.getWeapon().getSpeedPenalty());
             warrior.setAttack(warriorAttack);
             warrior.weaponAbility(opponent);
             environment.environmentEffects(warrior, opponent, turn);
-
-            // Display battle status
             displayBattleStats(warrior, opponent);
-
-            // Reset AI pattern
             if (faux == 4) {
                 faux = 1;
             }
-
-            // Show predictions and charging status
             predictMove(opponent, faux);
-
             if(warrior.isCharging()) {
                 System.out.println();
                 String[] chargeReady = {
@@ -589,18 +580,13 @@ public class Main {
                 };
                 printBox(chargeReady);
             }
-
             int warriorChoice = warriorMove();
-
-            // Prevent double charging
             if (warrior.isCharging() && warriorChoice == 3) {
                 do {
                     centerText("Warrior is already charging!!!!");
                     warriorChoice = warriorMove();
                 } while (warriorChoice == 3);
             }
-
-            // Execute combat based on speed
             if (warrior.getSpeed() > opponent.getSpeed()) {
                 switch (warriorChoice) {
                     case 1:
@@ -660,15 +646,11 @@ public class Main {
                     break;
                 }
             }
-
             faux++;
             turn++;
         }
-
-        // Battle results with enhanced presentation
         addSpacing();
         System.out.println();
-
         if(warrior.getHitPoints() == 0 && opponent.getHitPoints() == 0) {
             centerText("BATTLE RESULT: TIE!");
             System.out.println();
@@ -695,7 +677,6 @@ public class Main {
             };
             printBox(victoryMessage);
         }
-
         System.out.println();
         centerText("Thanks for playing Last Souls!");
     }
