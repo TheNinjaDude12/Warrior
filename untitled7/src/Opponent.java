@@ -110,14 +110,6 @@ public class Opponent {
     }
 
     // Setter methods for modifying opponent statistics
-    /**
-     * Sets the name/type of the opponent.
-     *
-     * @param name The name/type of the opponent.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
 
     /**
      * Sets the hit points of the opponent.
@@ -146,7 +138,22 @@ public class Opponent {
         this.defense = defense;
     }
 
+    // Defense state management
+    /**
+     * Returns whether the opponent is currently defending.
+     *
+     * @return true if the opponent is defending, false otherwise.
+     */
+    public boolean isDefending() {
+        return isDefending;
+    }
 
+    /**
+     * Resets the opponent's defending state to false.
+     */
+    public void setDefending(boolean state) {
+        isDefending = state;
+    }
 
     // Combat action: Attack the warrior
     /**
@@ -193,22 +200,7 @@ public class Opponent {
         isDefending = true;         // Set defending state
     }
 
-    // Defense state management
-    /**
-     * Returns whether the opponent is currently defending.
-     *
-     * @return true if the opponent is defending, false otherwise.
-     */
-    public boolean isDefending() {
-        return isDefending;
-    }
 
-    /**
-     * Resets the opponent's defending state to false.
-     */
-    public void setDefending(boolean state) {
-        isDefending = state;
-    }
 
     // Combat action: Charge for next attack (enables triple damage on next attack)
     /**
@@ -216,6 +208,7 @@ public class Opponent {
      */
     public void charge() {
         isCharging = true;
+        //Charge effects for Magician Enemy
         if(name.equals("Magician")) {
             Random r = new Random();
             switch (r.nextInt(5)) {
@@ -299,7 +292,7 @@ public class Opponent {
                         attack(warrior);
                         break;
                     case 2:         // Turn 2: Charge for next turn
-                        System.out.println("MAGE IS CHARGING!!!");
+                        System.out.println("MAGICIAN IS CHARGING!!!");
                         charge();
                         break;
                     case 3:         // Turn 3: Attack (will be charged attack from turn 2)

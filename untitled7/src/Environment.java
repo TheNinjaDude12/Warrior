@@ -17,14 +17,15 @@ public class Environment {
         this.environmentName = environmentName;
     }
 
-      /**
-     * Retrieves the name of the current environment.
+    /**
+     * Retrieves the environment name.
      *
      * @return The name of the environment.
      */
     public String getEnvironmentName() {
         return environmentName;
     }
+
 
 
     /**
@@ -62,13 +63,4 @@ public class Environment {
         // Arena environment has no effects (neutral battlefield)
     }
 
-  
-    /**
-     * Sets the name of the environment.
-     *
-     * @param environmentName The name to set for the environment.
-     */
-    public void setEnvironmentName(String environmentName) {
-        this.environmentName = environmentName;
-    }
 }

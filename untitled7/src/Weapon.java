@@ -6,17 +6,17 @@ public class Weapon {
     /**
      * The name of the weapon (e.g., "Sword", "Dagger", "Axe").
      */
-    public String name;           // Display name of the weapon
+    private String name;           // Display name of the weapon
     
     /**
      * The attack value provided by this weapon.
      */
-    public int attack;            // Attack value provided by this weapon
+    private int attack;            // Attack value provided by this weapon
     
     /**
      * The speed penalty caused by wielding this weapon.
      */
-    public int speedPenalty;      // Speed reduction caused by wielding this weapon
+    private int speedPenalty;      // Speed reduction caused by wielding this weapon
 
     /**
      * Constructs a Weapon object with the specified name, attack value, and speed penalty.
@@ -58,30 +58,5 @@ public class Weapon {
         return name;
     }
 
-    /**
-     * Sets the attack value of the weapon.
-     *
-     * @param attack The attack value to set.
-     */
-    public void setAttack(int attack) {
-        this.attack = attack;
-    }
 
-    /**
-     * Sets the speed penalty of the weapon.
-     *
-     * @param speedPenalty The speed penalty to set.
-     */
-    public void setSpeedPenalty(int speedPenalty) {
-        this.speedPenalty = speedPenalty;
-    }
-
-    /**
-     * Sets the name of the weapon.
-     *
-     * @param name The name to set.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
 }

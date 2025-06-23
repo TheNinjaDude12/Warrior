@@ -34,7 +34,7 @@ public class Warrior {
     /**
      * Currently equipped weapon.
      */
-    public Weapon weapon;           // Currently equipped weapon (public for easy access)
+    private Weapon weapon;           // Currently equipped weapon
 
     // Battle state tracking
     /**
@@ -63,14 +63,6 @@ public class Warrior {
         return hitPoints;
     }
 
-    /**
-     * Sets the warrior's current hit points.
-     *
-     * @param hitPoints The hit points to be set.
-     */
-    public void setHitPoints(int hitPoints) {
-        this.hitPoints = hitPoints;
-    }
 
     /**
      * Retrieves the warrior's current attack value.
@@ -81,14 +73,6 @@ public class Warrior {
         return attack;
     }
 
-    /**
-     * Sets the warrior's attack value.
-     *
-     * @param attack The attack value to be set.
-     */
-    public void setAttack(int attack) {
-        this.attack = attack;
-    }
 
     /**
      * Retrieves the warrior's current defense value.
@@ -100,15 +84,6 @@ public class Warrior {
     }
 
     /**
-     * Sets the warrior's defense value.
-     *
-     * @param defense The defense value to be set.
-     */
-    public void setDefense(int defense) {
-        this.defense = defense;
-    }
-
-    /**
      * Retrieves the warrior's current speed value.
      *
      * @return The current speed value of the warrior.
@@ -117,25 +92,6 @@ public class Warrior {
         return speed;
     }
 
-    /**
-     * Sets the warrior's speed value.
-     *
-     * @param speed The speed value to be set.
-     */
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    // Charging state management
-
-    /**
-     * Sets the warrior's charging state, allowing triple damage on the next attack.
-     *
-     * @param charging True if the warrior is charging, false otherwise.
-     */
-    public void setCharging(boolean charging) {
-        isCharging = charging;
-    }
 
     /**
      * Checks if the warrior is currently charging for a triple damage attack.
@@ -157,32 +113,66 @@ public class Warrior {
         return isDefending;
     }
 
+
     /**
-     * Resets the warrior's defending state to false.
+     * Sets the warrior's current hit points.
+     *
+     * @param hitPoints The hit points to be set.
+     */
+    public void setHitPoints(int hitPoints) {
+        this.hitPoints = hitPoints;
+    }
+
+    /**
+     * Sets the warrior's defense value.
+     *
+     * @param defense The attack value to be set.
+     */
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
+
+    /**
+     * Sets the warrior's attack value.
+     *
+     * @param attack The attack value to be set.
+     */
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    /**
+     * Sets the warrior's defending state.
      */
     public void setDefending(boolean state) {
         isDefending = state;
     }
 
-    // Defense state tracking methods (used for dagger weapon ability)
 
-    /**
-     * Resets the tracking of whether the warrior defended last turn.
-     */
-    public void resetDefendedLastTurn() {
-        defendedLastTurn = false;
-    }
 
-    /**
-     * Checks if the warrior defended on the last turn.
-     *
-     * @return True if the warrior defended last turn, false otherwise.
-     */
-    public boolean isDefendedLastTurn() {
-        return defendedLastTurn;
-    }
 
     // Equipment methods
+
+
+
+    /**
+     * Retrieves the currently equipped weapon.
+     *
+     * @return The currently equipped weapon.
+     */
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+
+    /**
+     * Retrieves the currently equipped armor.
+     *
+     * @return The currently equipped armor.
+     */
+    public Armor getArmor() {
+        return armor;
+    }
 
     /**
      * Equips a weapon and applies its stat modifications to the warrior.
@@ -196,15 +186,6 @@ public class Warrior {
     }
 
     /**
-     * Retrieves the currently equipped weapon.
-     *
-     * @return The currently equipped weapon.
-     */
-    public Weapon getWeapon() {
-        return weapon;
-    }
-
-    /**
      * Equips an armor and applies its stat modifications to the warrior.
      *
      * @param armor The armor to be equipped.
@@ -215,14 +196,6 @@ public class Warrior {
         this.speed = this.speed - armor.getSpeedPenalty();         // Reduce speed by armor's penalty
     }
 
-    /**
-     * Retrieves the currently equipped armor.
-     *
-     * @return The currently equipped armor.
-     */
-    public Armor getArmor() {
-        return armor;
-    }
 
     // Combat actions
 
@@ -263,8 +236,11 @@ public class Warrior {
      * Activates the warrior's defense, reducing incoming damage by half and tracking defense state for weapon abilities.
      */
     public void defend() {
-        defendedLastTurn = true;
         isDefending = true;
+        if(defendedLastTurn) {
+            defense = 10000;
+        }
+        defendedLastTurn = !defendedLastTurn;
         System.out.println("WARRIOR IS DEFENDING!!!");
     }
 
@@ -286,9 +262,8 @@ public class Warrior {
      * Executes weapon-specific abilities based on the currently equipped weapon and battle conditions.
      *
      * @param opponent The opponent in combat.
-     * @param turn     The current turn number.
      */
-    public void weaponAbility(Opponent opponent, int turn) {
+    public void weaponAbility(Opponent opponent) {
         if (weapon == null) {
             return; // No weapon equipped
         }
@@ -296,12 +271,9 @@ public class Warrior {
         switch (weapon.getName()) {
             case "Dagger":
                 // Dagger ability: Every other defend becomes a 100% evade
+
                 if (defendedLastTurn) {
                     System.out.println("Dagger ability activated: 100% evade!");
-                    if (isDefending()) {
-                        opponent.setAttack(0);
-                        defendedLastTurn = false;
-                    }
 
                 }
                 break;
@@ -322,37 +294,39 @@ public class Warrior {
                     System.out.println("Battleaxe ability activated: +5 speed and +5 attack!");
                 }
                 break;
+
             case "Staff":
                 // Staff Ability: When charging, gain a random element that grants you stats.
                 Random r = new Random();
-                switch (r.nextInt(5)) {
-                    case 1:
+                switch (r.nextInt(4)) {  // Changed from 5 to 4
+                    case 0:  // Changed from 1 to 0
                         // Fire
                         if (isCharging) {
                             this.attack += 5;
                             System.out.println("Staff ability activated: Fire! +5 attack!");
                         }
                         break;
-                    case 2:
+                    case 1:
                         // Wind
                         if (isCharging) {
                             this.speed += 5;
                             System.out.println("Staff ability activated: Wind! +5 speed!");
                         }
                         break;
-                    case 3:
+                    case 2:
                         // Water
                         if (isCharging) {
                             this.hitPoints += 10;
                             System.out.println("Staff ability activated: Water! +10 health!");
                         }
                         break;
-                    case 4:
+                    case 3:
                         // Earth
                         if (isCharging) {
                             this.defense += 3;
-                            System.out.println("Staff ability activated: Fire! +3 defense!");
+                            System.out.println("Staff ability activated: Earth! +3 defense!");
                         }
+                        break;
                 }
         }
     }
