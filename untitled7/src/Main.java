@@ -458,7 +458,7 @@ public class Main {
      * Predicts the next move of the opponent based on their current state and logic.
      *
      * @param opponent the opponent whose move is being predicted
-     * @param faux an integer representing the turn or sequence for prediction
+     * @param faux     an integer representing the turn or sequence for prediction
      */
     public static void predictMove(Opponent opponent, int faux) {
         System.out.println();
@@ -513,7 +513,7 @@ public class Main {
     /**
      * Displays the battle stats for both the warrior and the opponent during the combat.
      *
-     * @param warrior the player's warrior
+     * @param warrior  the player's warrior
      * @param opponent the selected opponent
      */
     public static void displayBattleStats(Warrior warrior, Opponent opponent) {
@@ -538,146 +538,161 @@ public class Main {
      * Handles combat, player moves, and opponent responses.
      */
     public static void Phase2() {
-        Warrior warrior = characterCreation();
-        Opponent opponent = chooseOpponent();
-        Environment environment = chooseEnvironment();
-        int faux = 1;
-        int turn = 1;
-        int opponentAttack = opponent.getAttack();
-        int warriorAttack = warrior.getAttack();
-        addSpacing();
-        System.out.println();
-        centerText("BATTLE BEGINS!");
-        System.out.println();
-        String[] battleIntro = {
-                "WARRIOR vs " + opponent.getName().toUpperCase(),
-                "Location: " + environment.getEnvironmentName(),
-                "",
-                "PREPARE FOR COMBAT!"
-        };
-        printBox(battleIntro);
-        Scanner sc = new Scanner(System.in);
-        System.out.println();
-        centerText("Press Enter to start battle...");
-        sc.nextLine();
-        while (true) {
+        while(true) {
+            Warrior warrior = characterCreation();
+            Opponent opponent = chooseOpponent();
+            Environment environment = chooseEnvironment();
+            int faux = 1;
+            int turn = 1;
+            int opponentAttack = opponent.getAttack();
+            int warriorAttack = warrior.getAttack();
             addSpacing();
-            opponent.setAttack(opponentAttack);
-            warrior.setDefense(warrior.getArmor().getDefense());
-            warrior.setSpeed(50 - warrior.getArmor().getSpeedPenalty() - warrior.getWeapon().getSpeedPenalty());
-            warrior.setAttack(warriorAttack);
-            warrior.weaponAbility(opponent);
-            environment.environmentEffects(warrior, opponent, turn);
-            displayBattleStats(warrior, opponent);
-            if (faux == 4) {
-                faux = 1;
+            System.out.println();
+            centerText("BATTLE BEGINS!");
+            System.out.println();
+            String[] battleIntro = {
+                    "WARRIOR vs " + opponent.getName().toUpperCase(),
+                    "Location: " + environment.getEnvironmentName(),
+                    "",
+                    "PREPARE FOR COMBAT!"
+            };
+            printBox(battleIntro);
+            Scanner sc = new Scanner(System.in);
+            System.out.println();
+            centerText("Press Enter to start battle...");
+            sc.nextLine();
+            while (true) {
+                addSpacing();
+                opponent.setAttack(opponentAttack);
+                warrior.setDefense(warrior.getArmor().getDefense());
+                warrior.setSpeed(50 - warrior.getArmor().getSpeedPenalty() - warrior.getWeapon().getSpeedPenalty());
+                warrior.setAttack(warriorAttack);
+                warrior.weaponAbility(opponent);
+                environment.environmentEffects(warrior, opponent, turn);
+                displayBattleStats(warrior, opponent);
+                if (faux == 4) {
+                    faux = 1;
+                }
+                predictMove(opponent, faux);
+                if(warrior.isCharging()) {
+                    System.out.println();
+                    String[] chargeReady = {
+                            "WARRIOR CHARGED ATTACK READY!"
+                    };
+                    printBox(chargeReady);
+                }
+                int warriorChoice = warriorMove();
+                if (warrior.isCharging() && warriorChoice == 3) {
+                    do {
+                        centerText("Warrior is already charging!!!!");
+                        warriorChoice = warriorMove();
+                    } while (warriorChoice == 3);
+                }
+                if (warrior.getSpeed() > opponent.getSpeed()) {
+                    switch (warriorChoice) {
+                        case 1:
+                            if(opponent.getName().equals("Viking") && faux == 2) {
+                                opponent.think(warrior, faux);
+                                warrior.attack(opponent);
+                            } else {
+                                warrior.attack(opponent);
+                                opponent.think(warrior, faux);
+                            }
+                            break;
+                        case 2:
+                            warrior.defend();
+                            opponent.think(warrior, faux);
+                            break;
+                        case 3:
+                            if (!warrior.charge()) {
+                                continue;
+                            }
+                            warrior.charge();
+                            opponent.think(warrior, faux);
+                            break;
+                    }
+                    if(isDead(opponent) || isDead(warrior)) break;
+                } else if (warrior.getSpeed() < opponent.getSpeed()) {
+                    switch (warriorChoice) {
+                        case 1:
+                            opponent.think(warrior, faux);
+                            warrior.attack(opponent);
+                            break;
+                        case 2:
+                            warrior.defend();
+                            opponent.think(warrior, faux);
+                            break;
+                        case 3:
+                            opponent.think(warrior, faux);
+                            warrior.charge();
+                            break;
+                    }
+                    if(isDead(opponent) || isDead(warrior)) break;
+                } else {
+                    switch (warriorChoice) {
+                        case 1:
+                            opponent.think(warrior, faux);
+                            warrior.attack(opponent);
+                            break;
+                        case 2:
+                            opponent.think(warrior, faux);
+                            warrior.defend();
+                            break;
+                        case 3:
+                            opponent.think(warrior, faux);
+                            warrior.charge();
+                            break;
+                    }
+                    if(isDead(warrior) && isDead(opponent)) {
+                        break;
+                    }
+                }
+                faux++;
+                turn++;
             }
-            predictMove(opponent, faux);
-            if(warrior.isCharging()) {
+            addSpacing();
+            System.out.println();
+            if(warrior.getHitPoints() == 0 && opponent.getHitPoints() == 0) {
+                centerText("BATTLE RESULT: TIE!");
                 System.out.println();
-                String[] chargeReady = {
-                        "WARRIOR CHARGED ATTACK READY!"
+                String[] tieMessage = {
+                        "Both warriors fell in glorious combat!",
+                        "A draw worthy of legends!"
                 };
-                printBox(chargeReady);
-            }
-            int warriorChoice = warriorMove();
-            if (warrior.isCharging() && warriorChoice == 3) {
-                do {
-                    centerText("Warrior is already charging!!!!");
-                    warriorChoice = warriorMove();
-                } while (warriorChoice == 3);
-            }
-            if (warrior.getSpeed() > opponent.getSpeed()) {
-                switch (warriorChoice) {
-                    case 1:
-                        if(opponent.getName().equals("Viking") && faux == 2) {
-                            opponent.think(warrior, faux);
-                            warrior.attack(opponent);
-                        } else {
-                            warrior.attack(opponent);
-                            opponent.think(warrior, faux);
-                        }
-                        break;
-                    case 2:
-                        warrior.defend();
-                        opponent.think(warrior, faux);
-                        break;
-                    case 3:
-                        if (!warrior.charge()) {
-                            continue;
-                        }
-                        warrior.charge();
-                        opponent.think(warrior, faux);
-                        break;
-                }
-                if(isDead(opponent) || isDead(warrior)) break;
-            } else if (warrior.getSpeed() < opponent.getSpeed()) {
-                switch (warriorChoice) {
-                    case 1:
-                        opponent.think(warrior, faux);
-                        warrior.attack(opponent);
-                        break;
-                    case 2:
-                        warrior.defend();
-                        opponent.think(warrior, faux);
-                        break;
-                    case 3:
-                        opponent.think(warrior, faux);
-                        warrior.charge();
-                        break;
-                }
-                if(isDead(opponent) || isDead(warrior)) break;
+                printBox(tieMessage);
+            } else if (warrior.getHitPoints() <= 0) {
+                centerText("YOU HAVE BEEN DEFEATED!");
+                System.out.println();
+                String[] defeatMessage = {
+                        "The warrior has fallen...",
+                        "Tip: Minecraft exists for players like you"
+                };
+                printBox(defeatMessage);
             } else {
-                switch (warriorChoice) {
-                    case 1:
-                        opponent.think(warrior, faux);
-                        warrior.attack(opponent);
-                        break;
-                    case 2:
-                        opponent.think(warrior, faux);
-                        warrior.defend();
-                        break;
-                    case 3:
-                        opponent.think(warrior, faux);
-                        warrior.charge();
-                        break;
-                }
-                if(isDead(warrior) && isDead(opponent)) {
-                    break;
-                }
+                centerText("VICTORY IS YOURS!");
+                System.out.println();
+                String[] victoryMessage = {
+                        "CONGRATULATIONS!",
+                        "You have proven yourself in combat!",
+                        "The realm celebrates your triumph!"
+                };
+                printBox(victoryMessage);
             }
-            faux++;
-            turn++;
+            System.out.println("1. Play again ");
+            System.out.println("2. Exit");
+            String choice;
+            do {
+                choice = sc.nextLine();
+                System.out.println("Invalid choice!");
+            } while(!choice.equals("1") && !choice.equals("2"));
+
+
+            if(choice.equals("2")) {
+                centerText("Thanks for playing Last Souls!");
+                break;
+            }
+
         }
-        addSpacing();
-        System.out.println();
-        if(warrior.getHitPoints() == 0 && opponent.getHitPoints() == 0) {
-            centerText("BATTLE RESULT: TIE!");
-            System.out.println();
-            String[] tieMessage = {
-                    "Both warriors fell in glorious combat!",
-                    "A draw worthy of legends!"
-            };
-            printBox(tieMessage);
-        } else if (warrior.getHitPoints() <= 0) {
-            centerText("YOU HAVE BEEN DEFEATED!");
-            System.out.println();
-            String[] defeatMessage = {
-                    "The warrior has fallen...",
-                    "Tip: Minecraft exists for players like you"
-            };
-            printBox(defeatMessage);
-        } else {
-            centerText("VICTORY IS YOURS!");
-            System.out.println();
-            String[] victoryMessage = {
-                    "CONGRATULATIONS!",
-                    "You have proven yourself in combat!",
-                    "The realm celebrates your triumph!"
-            };
-            printBox(victoryMessage);
-        }
-        System.out.println();
-        centerText("Thanks for playing Last Souls!");
     }
+
 }
