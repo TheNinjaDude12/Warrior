@@ -125,11 +125,11 @@ public class Main {
         String[] armorOptions = {
                 "CHOOSE YOUR ARMOR",
                 "",
-                "[1] Light Armor      [2] Medium Armor     [3] Heavy Armor",
-                "    +20 DEF              +30 DEF             +40 DEF",
-                "    -5 SPD              -15 SPD             -25 SPD",
+                "[1] Light Armor      [2] Medium Armor     [3] Heavy Armor     [4] No Armor",
+                "    +20 DEF              +30 DEF             +40 DEF             +0 DEF",
+                "    -5 SPD               -15 SPD             -25 SPD             -0 SPD",
                 "",
-                "Quick & Agile       Balanced Protection   Maximum Defense"
+                "Quick & Agile       Balanced Protection    Maximum Defense    The Baseline"
         };
         printBox(armorOptions);
         System.out.println();
@@ -137,12 +137,14 @@ public class Main {
         Armor lightArmor = new Armor("Light Armor", 20, 5);
         Armor mediumArmor = new Armor("Medium Armor", 30, 15);
         Armor heavyArmor = new Armor("Heavy Armor", 40, 25);
+        Armor noArmor = new Armor("No Armor", 0, 0);
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
         switch (choice) {
             case 1 -> warrior.equip(lightArmor);
             case 2 -> warrior.equip(mediumArmor);
             case 3 -> warrior.equip(heavyArmor);
+            case 4 -> warrior.equip(noArmor);
         }
         System.out.println();
         centerText("Equipped: " + warrior.getArmor().getName());
@@ -188,11 +190,18 @@ public class Main {
         };
         printBox(staffInfo);
         System.out.println();
+        String[] nothingInfo = {
+                "[5] NOTHING (0 ATK, 0 SPD)",
+                "'I can do this all day'"
+        }
+        PrintBox(nothingInfo);
+        System.out.println();
         centerText("Enter your choice (1-4): ");
         Weapon dagger = new Weapon("Dagger", 20, 0);
         Weapon sword = new Weapon("Sword", 30, 10);
         Weapon battleaxe = new Weapon("Axe", 40, 20);
         Weapon staff = new Weapon("Staff", 30, 20);
+        Weapon nothing = new Weapon("Nothing", 0, 0);
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
         switch (choice) {
@@ -200,6 +209,7 @@ public class Main {
             case 2 -> warrior.equip(sword);
             case 3 -> warrior.equip(battleaxe);
             case 4 -> warrior.equip(staff);
+            case 5 -> warrior.equip(nothing);
         }
         System.out.println();
         centerText("Equipped: " + warrior.getWeapon().getName());
