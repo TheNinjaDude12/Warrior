@@ -79,7 +79,7 @@ public class Main {
         centerText("|                                                                          |");
         centerText("+--------------------------------------------------------------------------+");
         System.out.println();
-        System.out.print("Press any key to continue");
+        System.out.print("Press any key to continue\n");
         sc.nextLine();
     }
 
@@ -133,11 +133,11 @@ public class Main {
         };
         printBox(armorOptions);
         System.out.println();
-        centerText("Enter your choice (1-3): ");
+        centerText("Enter your choice (1-4): ");
         Armor lightArmor = new Armor("Light Armor", 20, 5);
         Armor mediumArmor = new Armor("Medium Armor", 30, 15);
         Armor heavyArmor = new Armor("Heavy Armor", 40, 25);
-        Armor noArmor = new Armor("No Armor", 0, 0);
+        Armor noArmor = new Armor("No Armor", 1, 0);
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
         switch (choice) {
@@ -193,15 +193,15 @@ public class Main {
         String[] nothingInfo = {
                 "[5] NOTHING (0 ATK, 0 SPD)",
                 "'I can do this all day'"
-        }
-        PrintBox(nothingInfo);
+        };
+        printBox(nothingInfo);
         System.out.println();
-        centerText("Enter your choice (1-4): ");
+        centerText("Enter your choice (1-5): ");
         Weapon dagger = new Weapon("Dagger", 20, 0);
         Weapon sword = new Weapon("Sword", 30, 10);
         Weapon battleaxe = new Weapon("Axe", 40, 20);
         Weapon staff = new Weapon("Staff", 30, 20);
-        Weapon nothing = new Weapon("Nothing", 0, 0);
+        Weapon nothing = new Weapon("Nothing", 1, 0);
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
         switch (choice) {
@@ -693,7 +693,8 @@ public class Main {
             String choice;
             do {
                 choice = sc.nextLine();
-                System.out.println("Invalid choice!");
+                if (!choice.equals("1") && !choice.equals("2")) {
+                System.out.println("Invalid choice!"); }
             } while(!choice.equals("1") && !choice.equals("2"));
 
 
