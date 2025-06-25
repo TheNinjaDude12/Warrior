@@ -553,9 +553,6 @@ public class Main {
             Opponent opponent = chooseOpponent();
             Environment environment = chooseEnvironment();
             int faux = 1;
-            int turn = 1;
-            int opponentAttack = opponent.getAttack();
-            int warriorAttack = warrior.getAttack();
             addSpacing();
             System.out.println();
             centerText("BATTLE BEGINS!");
@@ -573,12 +570,10 @@ public class Main {
             sc.nextLine();
             while (true) {
                 addSpacing();
-                opponent.setAttack(opponentAttack);
-                warrior.setDefense(warrior.getArmor().getDefense());
-                warrior.setSpeed(50 - warrior.getArmor().getSpeedPenalty() - warrior.getWeapon().getSpeedPenalty());
-                warrior.setAttack(warriorAttack);
+                warrior.setDefending(false);
+                opponent.setDefending(false);
                 warrior.weaponAbility(opponent);
-                environment.environmentEffects(warrior, opponent, turn);
+                environment.environmentEffects(warrior, opponent);
                 displayBattleStats(warrior, opponent);
                 if (faux == 4) {
                     faux = 1;
@@ -645,24 +640,25 @@ public class Main {
                             warrior.attack(opponent);
                             break;
                         case 2:
-                            opponent.think(warrior, faux);
                             warrior.defend();
+                            opponent.think(warrior, faux);
                             break;
                         case 3:
                             opponent.think(warrior, faux);
                             warrior.charge();
                             break;
                     }
+
                     if(isDead(warrior) && isDead(opponent)) {
                         break;
                     }
+                    if(isDead(opponent) || isDead(warrior)) break;
                 }
                 faux++;
-                turn++;
             }
             addSpacing();
             System.out.println();
-            if(warrior.getHitPoints() == 0 && opponent.getHitPoints() == 0) {
+            if(warrior.getHitPoints() <= 0 && opponent.getHitPoints() <= 0) {
                 centerText("BATTLE RESULT: TIE!");
                 System.out.println();
                 String[] tieMessage = {
@@ -670,7 +666,7 @@ public class Main {
                         "A draw worthy of legends!"
                 };
                 printBox(tieMessage);
-            } else if (warrior.getHitPoints() <= 0) {
+            } else if (warrior.getHitPoints() <= 0 && opponent.getHitPoints() > 0) {
                 centerText("YOU HAVE BEEN DEFEATED!");
                 System.out.println();
                 String[] defeatMessage = {
@@ -694,7 +690,7 @@ public class Main {
             do {
                 choice = sc.nextLine();
                 if (!choice.equals("1") && !choice.equals("2")) {
-                System.out.println("Invalid choice!"); }
+                    System.out.println("Invalid choice!"); }
             } while(!choice.equals("1") && !choice.equals("2"));
 
 

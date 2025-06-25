@@ -227,12 +227,27 @@ public class Warrior {
     public void attack(Opponent opponent) {
         int damage;
 
+
+
+
         // Check if this is a charged attack (triple damage)
-        if (isCharging) {
+        if (isCharging && weapon.getName().equals("Axe")) {
             System.out.println("WARRIOR CHARGED, ATTACK WILL DO TRIPLE DAMAGE!!!");
             damage = (getAttack() * 3 - opponent.getDefense());     // Triple damage minus opponent's defense
-            isCharging = false;                                     // Reset charging state after use
-        } else {
+            isCharging = false;// Reset charging state after use
+            this.attack -=5; //Remove bonus stats
+            this.speed -=5; //Remove bonus stats
+        } else if (isCharging) {
+            System.out.println("WARRIOR CHARGED, ATTACK WILL DO TRIPLE DAMAGE!!!");
+            damage = (getAttack() * 3 - opponent.getDefense());     // Triple damage minus opponent's defense
+            isCharging = false;// Reset charging state after use
+
+        } else if(weapon.getName().equals("Sword") && !isCharging) {
+                System.out.println("Sword ability activated: +10 attack!");
+                damage = (getAttack() + 10 - opponent.getDefense());
+
+        }
+        else {
             damage = (getAttack() - opponent.getDefense());         // Normal damage calculation
         }
 
@@ -256,7 +271,7 @@ public class Warrior {
      */
     public void defend() {
         isDefending = true;
-        if(defendedLastTurn) {
+        if(defendedLastTurn && weapon.getName("Dagger")) {
             defense = 10000;
         }
         defendedLastTurn = !defendedLastTurn;
@@ -293,17 +308,9 @@ public class Warrior {
 
                 if (defendedLastTurn) {
                     System.out.println("Dagger ability activated: 100% evade!");
-
                 }
                 break;
 
-            case "Sword":
-                // Sword ability: Gain +10 attack when attacking
-                if (!isDefending && !isCharging) {
-                    this.attack += 10;
-                    System.out.println("Sword ability activated: +10 attack!");
-                }
-                break;
 
             case "Axe":
                 // Battleaxe ability: When charging, gain +5 speed and +5 attack next turn

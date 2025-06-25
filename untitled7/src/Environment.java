@@ -37,14 +37,12 @@ public class Environment {
      *
      * @param warrior The warrior participating in combat.
      * @param opponent The opponent participating in combat.
-     * @param turn The current turn number (currently not used in calculations but kept for future expansion).
      */
-    public void environmentEffects(Warrior warrior, Opponent opponent, int turn) {
+    public void environmentEffects(Warrior warrior, Opponent opponent) {
         // Check if current environment is Swamp
         if (environmentName.equals("Swamp")) {
             // Apply swamp effects: favors the opponent
-            int attackBonus = 1; // Simplified from original turn calculation
-            opponent.setAttack(opponent.getAttack() + attackBonus);
+            opponent.setAttack(opponent.getAttack() + 1);
             System.out.println("Opponent ATK increased by 1!");
             
             warrior.setHitPoints(warrior.getHitPoints() - 1);
@@ -53,9 +51,8 @@ public class Environment {
         // Check if current environment is Colosseum
         else if (environmentName.equals("Colosseum")) {
             // Apply colosseum effects: favors the warrior
-            int attackBonus = 1; // Simplified from original turn calculation
             System.out.println("Warrior ATK increased by 1!");
-            warrior.setAttack(warrior.getAttack() + attackBonus);
+            warrior.setAttack(warrior.getAttack() + 1);
             
             System.out.println("Opponent DEF reduced by 1!");
             opponent.setDefense(opponent.getDefense() - 1);

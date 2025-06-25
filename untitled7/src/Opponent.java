@@ -213,30 +213,30 @@ public class Opponent {
         //Charge effects for Magician Enemy
         if(name.equals("Magician")) {
             Random r = new Random();
-            switch (r.nextInt(5)) {
-                case 1:
+            switch (r.nextInt(4)) {
+                case 0:
                     // Fire
-                        this.attack += 5;
+                        attack += 5;
                         System.out.println("Magician ability activated: Fire! +5 attack!");
                     break;
-                case 2:
+                case 1:
                     // Wind
 
-                        this.speed += 5;
+                        speed += 5;
                         System.out.println("Magician ability activated: Wind! +5 speed!");
 
                     break;
-                case 3:
+                case 2:
                     // Water
 
-                        this.hitPoints += 10;
+                        hitPoints += 10;
                         System.out.println("Magician ability activated: Water! +10 health!");
 
                     break;
-                case 4:
+                case 3:
                     // Earth
 
-                        this.defense += 3;
+                        defense += 3;
                         System.out.println("Magician ability activated: Earth! +3 defense!");
 
 
