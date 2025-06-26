@@ -655,6 +655,8 @@ public class Main {
                     if(isDead(opponent) || isDead(warrior)) break;
                 }
                 faux++;
+                System.out.print("Press enter to continue");
+                sc.nextLine();
             }
             addSpacing();
             System.out.println();
