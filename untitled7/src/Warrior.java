@@ -271,7 +271,7 @@ public class Warrior {
      */
     public void defend() {
         isDefending = true;
-        if(defendedLastTurn && weapon.getName("Dagger")) {
+        if(defendedLastTurn && weapon.getName() == "Dagger") {
             defense = 10000;
         }
         defendedLastTurn = !defendedLastTurn;
