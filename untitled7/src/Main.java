@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+
 /**
  * Main class for a text-based battle game. Handles the console display, user input,
  * game setup, and main game loop where the player creates a warrior, chooses an
@@ -36,7 +37,7 @@ public class Main {
     }
 
     /**
-     * Prints the given text inside a box format on the console.
+     * Prints the given text inside a box format on the console, centered.
      *
      * @param lines an array of strings representing the content to be displayed in the box
      */
@@ -48,12 +49,23 @@ public class Main {
             }
         }
         maxLength += 4;
-        System.out.println("+" + "-".repeat(maxLength) + "+");
+
+        // Calculate centering for the entire box
+        int boxWidth = maxLength + 2; // +2 for the border characters
+        int centerPadding = (CONSOLE_WIDTH - boxWidth) / 2;
+        String boxPadding = " ".repeat(Math.max(0, centerPadding));
+
+        // Print top border centered
+        System.out.println(boxPadding + "+" + "-".repeat(maxLength) + "+");
+
+        // Print content lines centered
         for (String line : lines) {
             int padding = maxLength - line.length() - 2;
-            System.out.println("| " + line + " ".repeat(padding) + " |");
+            System.out.println(boxPadding + "| " + line + " ".repeat(padding) + " |");
         }
-        System.out.println("+" + "-".repeat(maxLength) + "+");
+
+        // Print bottom border centered
+        System.out.println(boxPadding + "+" + "-".repeat(maxLength) + "+");
     }
 
     /**
@@ -69,17 +81,17 @@ public class Main {
     public static void displayTitle() {
         Scanner sc = new Scanner(System.in);
         addSpacing();
-        centerText("+--------------------------------------------------------------------------+");
-        centerText("|                                                                           |");
-        centerText("|   ##      #####  ##### #######     #####  ##### ##   ## ##                |");
-        centerText("|   ##     ##   ## ##      ##       ##     ##   ## ##   ## ##               |");
-        centerText("|   ##     ####### #####   ##        ####  ##   ## ##   ## ##               |");
-        centerText("|   ##     ##   ##     ##  ##           ## ##   ## ##   ## ##               |");
-        centerText("|   #####  ##   ## #####   ##       #####   #####   #####  #####            |");
-        centerText("|                                                                           |");
-        centerText("+--------------------------------------------------------------------------+");
+        centerText("+----------------------------------------------------------------------------+");
+        centerText("|                                                                            |");
+        centerText("|   ##      #####  ##### #######     #####  #####  ##   ## ##                |");
+        centerText("|   ##     ##   ## ##      ##       ##     ##   ## ##   ## ##                |");
+        centerText("|   ##     ####### #####   ##        ####  ##   ## ##   ## ##                |");
+        centerText("|   ##     ##   ##     ##  ##           ## ##   ## ##   ## ##                |");
+        centerText("|   #####  ##   ## #####   ##       #####   #####   #####  #####             |");
+        centerText("|                                                                            |");
+        centerText("+----------------------------------------------------------------------------+");
         System.out.println();
-        System.out.print("Press any key to continue\n");
+        centerText("Press any key to continue");
         sc.nextLine();
     }
 
@@ -131,92 +143,120 @@ public class Main {
                 "",
                 "Quick & Agile       Balanced Protection    Maximum Defense    The Baseline"
         };
-        printBox(armorOptions);
-        System.out.println();
-        centerText("Enter your choice (1-4): ");
-        Armor lightArmor = new Armor("Light Armor", 20, 5);
-        Armor mediumArmor = new Armor("Medium Armor", 30, 15);
-        Armor heavyArmor = new Armor("Heavy Armor", 40, 25);
-        Armor noArmor = new Armor("No Armor", 1, 0);
-        Scanner sc = new Scanner(System.in);
-        int choice = sc.nextInt();
-        switch (choice) {
-            case 1 -> warrior.equip(lightArmor);
-            case 2 -> warrior.equip(mediumArmor);
-            case 3 -> warrior.equip(heavyArmor);
-            case 4 -> warrior.equip(noArmor);
+        while (true) {
+            printBox(armorOptions);
+            System.out.println();
+            centerText("Enter your choice (1-4): ");
+            Armor lightArmor = new Armor("Light Armor", 20, 5);
+            Armor mediumArmor = new Armor("Medium Armor", 30, 15);
+            Armor heavyArmor = new Armor("Heavy Armor", 40, 25);
+            Armor noArmor = new Armor("No Armor", 1, 0);
+            Scanner sc = new Scanner(System.in);
+            String choice = sc.next();
+            switch (choice) {
+                case "1":
+                    warrior.equip(lightArmor);
+                    break;
+                case "2":
+                    warrior.equip(mediumArmor);
+                    break;
+                case "3":
+                    warrior.equip(heavyArmor);
+                    break;
+                case "4":
+                    warrior.equip(noArmor);
+                    break;
+                default:
+                    System.out.println("Invalid Choice!");
+                    continue;
+            }
+            System.out.println();
+            centerText("Equipped: " + warrior.getArmor().getName());
+            centerText("Press Enter to continue...");
+            sc.nextLine(); // Buffer
+            sc.nextLine();
+            break;
         }
-        System.out.println();
-        centerText("Equipped: " + warrior.getArmor().getName());
-        centerText("Press Enter to continue...");
-        sc.nextLine(); // Buffer
-        sc.nextLine();
     }
-
     /**
      * Prompts the player to choose a weapon type, displaying the available options and their effects.
      *
      * @param warrior the warrior who will equip the chosen weapon
      */
     public static void chooseWeapon(Warrior warrior) {
-        addSpacing();
-        System.out.println();
-        centerText("WEAPON SELECTION");
-        System.out.println();
-        centerText("CHOOSE YOUR WEAPON");
-        System.out.println();
-        String[] daggerInfo = {
-                "[1] DAGGER (20 ATK)",
-                "Special: Every other defend becomes 100% evade"
-        };
-        printBox(daggerInfo);
-        System.out.println();
-        String[] swordInfo = {
-                "[2] SWORD (30 ATK, -10 SPD)",
-                "Special: +10 bonus attack damage when attacking"
-        };
-        printBox(swordInfo);
-        System.out.println();
-        String[] axeInfo = {
-                "[3] BATTLE AXE (40 ATK, -20 SPD)",
-                "Special: Charging grants +5 SPD and +5 ATK next turn"
-        };
-        printBox(axeInfo);
-        System.out.println();
-        String[] staffInfo = {
-                "[4] STAFF (30 ATK, -20 SPD)",
-                "Special: Charging conjures random element boost",
-                "Fire: +5 ATK | Wind: +5 SPD | Water: +10 HP | Earth: +3 DEF"
-        };
-        printBox(staffInfo);
-        System.out.println();
-        String[] nothingInfo = {
-                "[5] NOTHING (0 ATK, 0 SPD)",
-                "'I can do this all day'"
-        };
-        printBox(nothingInfo);
-        System.out.println();
-        centerText("Enter your choice (1-5): ");
-        Weapon dagger = new Weapon("Dagger", 20, 0);
-        Weapon sword = new Weapon("Sword", 30, 10);
-        Weapon battleaxe = new Weapon("Axe", 40, 20);
-        Weapon staff = new Weapon("Staff", 30, 20);
-        Weapon nothing = new Weapon("Nothing", 1, 0);
-        Scanner sc = new Scanner(System.in);
-        int choice = sc.nextInt();
-        switch (choice) {
-            case 1 -> warrior.equip(dagger);
-            case 2 -> warrior.equip(sword);
-            case 3 -> warrior.equip(battleaxe);
-            case 4 -> warrior.equip(staff);
-            case 5 -> warrior.equip(nothing);
+        while (true) {
+            addSpacing();
+            System.out.println();
+            centerText("WEAPON SELECTION");
+            System.out.println();
+            centerText("CHOOSE YOUR WEAPON");
+            System.out.println();
+            String[] daggerInfo = {
+                    "[1] DAGGER (20 ATK)",
+                    "Special: Every other defend becomes 100% evade"
+            };
+            printBox(daggerInfo);
+            System.out.println();
+            String[] swordInfo = {
+                    "[2] SWORD (30 ATK, -10 SPD)",
+                    "Special: +10 bonus attack damage when attacking"
+            };
+            printBox(swordInfo);
+            System.out.println();
+            String[] axeInfo = {
+                    "[3] BATTLE AXE (40 ATK, -20 SPD)",
+                    "Special: Charging grants +5 SPD and +5 ATK next turn"
+            };
+            printBox(axeInfo);
+            System.out.println();
+            String[] staffInfo = {
+                    "[4] STAFF (30 ATK, -20 SPD)",
+                    "Special: Charging conjures random element boost",
+                    "Fire: +5 ATK | Wind: +5 SPD | Water: +10 HP | Earth: +3 DEF"
+            };
+            printBox(staffInfo);
+            System.out.println();
+            String[] nothingInfo = {
+                    "[5] NOTHING (0 ATK, 0 SPD)",
+                    "'I can do this all day'"
+            };
+            printBox(nothingInfo);
+            System.out.println();
+            centerText("Enter your choice (1-5): ");
+            Weapon dagger = new Weapon("Dagger", 20, 0);
+            Weapon sword = new Weapon("Sword", 30, 10);
+            Weapon battleaxe = new Weapon("Axe", 40, 20);
+            Weapon staff = new Weapon("Staff", 30, 20);
+            Weapon nothing = new Weapon("Nothing", 1, 0);
+            Scanner sc = new Scanner(System.in);
+            String choice = sc.next();
+            switch (choice) {
+                case "1":
+                    warrior.equip(dagger);
+                    break;
+                case "2":
+                    warrior.equip(sword);
+                    break;
+                case "3":
+                    warrior.equip(battleaxe);
+                    break;
+                case "4":
+                    warrior.equip(staff);
+                    break;
+                case "5":
+                    warrior.equip(nothing);
+                    break;
+                default:
+                    System.out.println("Invalid Choice!");
+                    continue;
+            }
+            System.out.println();
+            centerText("Equipped: " + warrior.getWeapon().getName());
+            centerText("Press Enter to continue...");
+            sc.nextLine();
+            break;
         }
-        System.out.println();
-        centerText("Equipped: " + warrior.getWeapon().getName());
-        centerText("Press Enter to continue...");
-        sc.nextLine();
     }
-
     /**
      * Handles the complete character creation process, displaying the warrior's stats,
      * allowing the player to choose armor and weapons, and confirming the character setup.
@@ -246,12 +286,17 @@ public class Main {
                     "[1] Continue",
                     "[2] Reset Character"
             };
+
             printBox(confirmOptions);
             System.out.println();
             centerText("Choice: ");
             String confirm = sc.nextLine();
             if (confirm.equals("1")) {
                 return warrior;
+            } else if (confirm.equals("2")) {
+                System.out.println("Resetting...\n");
+            } else {
+                System.out.println("Invalid Choice! Resetting... \n");
             }
         }
     }
@@ -289,24 +334,24 @@ public class Main {
             printBox(opponentOptions);
             System.out.println();
             centerText("Choice: ");
-            int input = sc.nextInt();
+            String input = sc.next();
             sc.nextLine();
             Opponent opponent;
             String selectedName = "";
             switch (input) {
-                case 1:
+                case "1":
                     opponent = thief;
                     selectedName = "THIEF";
                     break;
-                case 2:
+                case "2":
                     opponent = viking;
                     selectedName = "VIKING";
                     break;
-                case 3:
+                case "3":
                     opponent = minotaur;
                     selectedName = "MINOTAUR";
                     break;
-                case 4:
+                case "4":
                     opponent = magician;
                     selectedName = "MAGICIAN";
                     break;
@@ -331,6 +376,10 @@ public class Main {
             String confirm = sc.nextLine();
             if (confirm.equals("1")) {
                 return opponent;
+            } else if (confirm.equals("2")) {
+                System.out.println("Resetting...\n");
+            } else {
+                System.out.println("Invalid Choice! Resetting... \n");
             }
         }
     }
@@ -373,20 +422,20 @@ public class Main {
             printBox(colosseumInfo);
             System.out.println();
             centerText("Choice: ");
-            int input = sc.nextInt();
+            String input = sc.next();
             sc.nextLine();
             Environment environment;
             String selectedName = "";
             switch (input) {
-                case 1:
+                case "1":
                     environment = arena;
                     selectedName = "ARENA";
                     break;
-                case 2:
+                case "2":
                     environment = swamp;
                     selectedName = "SWAMP";
                     break;
-                case 3:
+                case "3":
                     environment = colosseum;
                     selectedName = "COLOSSEUM";
                     break;
@@ -411,6 +460,10 @@ public class Main {
             String confirm = sc.nextLine();
             if (confirm.equals("1")) {
                 return environment;
+            } else if (confirm.equals("2")) {
+                System.out.println("Resetting...\n");
+            } else {
+                System.out.println("Invalid Choice! Resetting... \n");
             }
         }
     }
@@ -434,9 +487,9 @@ public class Main {
             printBox(moveOptions);
             System.out.println();
             centerText("Choice: ");
-            int choice = sc.nextInt();
-            if (choice >= 1 && choice <= 3) {
-                return choice;
+            String choice = sc.next();
+            if ("1".equals(choice) || "2".equals(choice) || "3".equals(choice)) {
+                return Integer.valueOf(choice);
             } else {
                 centerText("Invalid move! Please select 1-3.");
                 System.out.println();
@@ -655,7 +708,7 @@ public class Main {
                     if(isDead(opponent) || isDead(warrior)) break;
                 }
                 faux++;
-                System.out.print("Press enter to continue");
+                centerText("Press enter to continue");
                 sc.nextLine();
             }
             addSpacing();
@@ -686,22 +739,20 @@ public class Main {
                 };
                 printBox(victoryMessage);
             }
-            System.out.println("1. Play again ");
-            System.out.println("2. Exit");
+            centerText("1. Play again");
+            centerText("2. Exit");
             String choice;
             do {
                 choice = sc.nextLine();
                 if (!choice.equals("1") && !choice.equals("2")) {
-                    System.out.println("Invalid choice!"); }
+                    centerText("Invalid choice!");
+                }
             } while(!choice.equals("1") && !choice.equals("2"));
-
 
             if(choice.equals("2")) {
                 centerText("Thanks for playing Last Souls!");
                 break;
             }
-
         }
     }
-
 }
